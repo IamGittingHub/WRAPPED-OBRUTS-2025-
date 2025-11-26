@@ -1,0 +1,4754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE OBRUTS 2025 - Group Chat Stats</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #ec4899;
+            --accent: #14b8a6;
+            --gold: #f59e0b;
+            --silver: #94a3b8;
+            --bronze: #d97706;
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --bg-card-hover: #334155;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --gradient-1: linear-gradient(135deg, #6366f1 0%, #ec4899 100%);
+            --gradient-2: linear-gradient(135deg, #14b8a6 0%, #6366f1 100%);
+            --gradient-3: linear-gradient(135deg, #f59e0b 0%, #ec4899 100%);
+            --glow: 0 0 40px rgba(99, 102, 241, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background:
+                radial-gradient(ellipse at 20% 20%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(236, 72, 153, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(20, 184, 166, 0.1) 0%, transparent 50%);
+            animation: bgPulse 10s ease-in-out infinite;
+        }
+
+        @keyframes bgPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: float 15s infinite;
+            opacity: 0.5;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.5; }
+            90% { opacity: 0.5; }
+            100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
+        }
+
+        .header {
+            text-align: center;
+            padding: 60px 20px;
+            position: relative;
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(3rem, 10vw, 6rem);
+            font-weight: 900;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: var(--glow);
+            letter-spacing: 0.1em;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 20px rgba(99, 102, 241, 0.5)); }
+            to { filter: drop-shadow(0 0 40px rgba(236, 72, 153, 0.5)); }
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-top: 10px;
+            font-weight: 300;
+        }
+
+        .year-badge {
+            display: inline-block;
+            background: var(--gradient-3);
+            padding: 8px 24px;
+            border-radius: 50px;
+            font-weight: 700;
+            margin-top: 20px;
+            font-size: 1.1rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .stats-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 20px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-1);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--glow);
+            border-color: var(--primary);
+        }
+
+        .stat-number {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .section-title {
+            text-align: center;
+            padding: 60px 20px 30px;
+        }
+
+        .section-title h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-title .emoji {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .leaderboard {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 20px 30px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .leaderboard-item:hover {
+            transform: translateX(10px);
+            border-color: var(--primary);
+            box-shadow: var(--glow);
+        }
+
+        .leaderboard-item.gold {
+            border-color: var(--gold);
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, var(--bg-card) 100%);
+        }
+
+        .leaderboard-item.silver {
+            border-color: var(--silver);
+            background: linear-gradient(135deg, rgba(148, 163, 184, 0.1) 0%, var(--bg-card) 100%);
+        }
+
+        .leaderboard-item.bronze {
+            border-color: var(--bronze);
+            background: linear-gradient(135deg, rgba(217, 119, 6, 0.1) 0%, var(--bg-card) 100%);
+        }
+
+        .rank {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            width: 60px;
+            text-align: center;
+        }
+
+        .rank.gold { color: var(--gold); }
+        .rank.silver { color: var(--silver); }
+        .rank.bronze { color: var(--bronze); }
+
+        .avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--gradient-1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-right: 20px;
+        }
+
+        .player-info {
+            flex: 1;
+        }
+
+        .player-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .player-stat {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .score {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            padding: 20px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .stats-panel {
+            background: var(--bg-card);
+            border-radius: 24px;
+            padding: 30px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .stats-panel h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .awards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            padding: 20px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .award-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .award-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent, var(--primary), transparent, var(--secondary), transparent);
+            animation: rotate 4s linear infinite;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .award-card:hover::before {
+            opacity: 0.1;
+        }
+
+        @keyframes rotate {
+            100% { transform: rotate(360deg); }
+        }
+
+        .award-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.2);
+        }
+
+        .award-emoji {
+            font-size: 4rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .award-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 10px;
+        }
+
+        .award-winner {
+            font-size: 1.4rem;
+            font-weight: 700;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .award-stat {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 8px;
+        }
+
+        .chart-container {
+            background: var(--bg-card);
+            border-radius: 24px;
+            padding: 30px;
+            margin: 20px 40px;
+            max-width: 1320px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .chart-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .bar-chart {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            height: 200px;
+            padding-top: 20px;
+        }
+
+        .bar-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            height: 100%;
+        }
+
+        .bar {
+            width: 60%;
+            background: var(--gradient-1);
+            border-radius: 8px 8px 0 0;
+            transition: all 0.3s ease;
+            position: relative;
+            min-height: 5px;
+        }
+
+        .bar:hover {
+            filter: brightness(1.2);
+            transform: scaleY(1.02);
+        }
+
+        .bar-label {
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .bar-value {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--accent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .bar:hover .bar-value {
+            opacity: 1;
+        }
+
+        .fun-facts {
+            background: linear-gradient(135deg, var(--bg-card) 0%, rgba(99, 102, 241, 0.1) 100%);
+            border-radius: 24px;
+            padding: 40px;
+            margin: 40px;
+            max-width: 1320px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .fact-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .fact-item:last-child {
+            border-bottom: none;
+        }
+
+        .fact-icon {
+            font-size: 2.5rem;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-dark);
+            border-radius: 50%;
+        }
+
+        .fact-content h4 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .fact-content p {
+            color: var(--text-secondary);
+        }
+
+        .fact-highlight {
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+        }
+
+        .footer-logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            padding: 20px;
+        }
+
+        .tab-btn {
+            background: var(--bg-card);
+            border: 2px solid transparent;
+            color: var(--text-primary);
+            padding: 12px 24px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn:hover, .tab-btn.active {
+            border-color: var(--primary);
+            background: rgba(99, 102, 241, 0.2);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .person-details {
+            background: var(--bg-card);
+            border-radius: 24px;
+            padding: 30px;
+            margin: 20px 0;
+        }
+
+        .person-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .person-avatar-large {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--gradient-1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .person-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+        }
+
+        .mini-stat {
+            background: rgba(255,255,255,0.05);
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .mini-stat-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            color: var(--accent);
+        }
+
+        .mini-stat-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-top: 5px;
+        }
+
+        .animate-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .animate-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            .stats-overview {
+                grid-template-columns: repeat(2, 1fr);
+                padding: 20px;
+            }
+
+            .stats-grid, .awards-grid {
+                padding: 20px;
+            }
+
+            .leaderboard-item {
+                padding: 15px;
+            }
+
+            .fun-facts {
+                margin: 20px;
+                padding: 20px;
+            }
+
+            .chart-container {
+                margin: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    <div class="particles" id="particles"></div>
+
+    <header class="header">
+        <div class="logo">THE OBRUTS</div>
+        <p class="tagline">"TURBO" spelled backwards - Friends since forever</p>
+        <div class="year-badge">2024-2025 STATS</div>
+    </header>
+
+    <section class="stats-overview" id="overview"></section>
+
+    <div class="tabs">
+        <button class="tab-btn active" data-tab="leaderboards">Leaderboards</button>
+        <button class="tab-btn" data-tab="awards">Awards</button>
+        <button class="tab-btn" data-tab="activity">Activity</button>
+        <button class="tab-btn" data-tab="funfacts">Fun Facts</button>
+        <button class="tab-btn" data-tab="everyone">Everyone</button>
+    </div>
+
+    <div class="tab-content active" id="leaderboards">
+        <div class="section-title">
+            <span class="emoji">🏆</span>
+            <h2>MESSAGE LEADERBOARD</h2>
+        </div>
+        <div class="leaderboard" id="messageLeaderboard"></div>
+
+        <div class="section-title">
+            <span class="emoji">⚡</span>
+            <h2>FASTEST RESPONDERS</h2>
+        </div>
+        <div class="leaderboard" id="responseLeaderboard"></div>
+
+        <div class="section-title">
+            <span class="emoji">📸</span>
+            <h2>MEDIA SHARERS</h2>
+        </div>
+        <div class="leaderboard" id="mediaLeaderboard"></div>
+    </div>
+
+    <div class="tab-content" id="awards">
+        <div class="section-title">
+            <span class="emoji">🎖️</span>
+            <h2>SPECIAL AWARDS</h2>
+        </div>
+        <div class="awards-grid" id="awardsGrid"></div>
+    </div>
+
+    <div class="tab-content" id="activity">
+        <div class="section-title">
+            <span class="emoji">📊</span>
+            <h2>MONTHLY ACTIVITY</h2>
+        </div>
+        <div class="chart-container">
+            <div class="chart-title"><span>📈</span> Messages Per Month</div>
+            <div class="bar-chart" id="monthlyChart"></div>
+        </div>
+
+        <div class="section-title">
+            <span class="emoji">🕐</span>
+            <h2>WHEN DO WE CHAT?</h2>
+        </div>
+        <div class="chart-container">
+            <div class="chart-title"><span>⏰</span> Activity by Hour (0-23)</div>
+            <div class="bar-chart" id="hourlyChart"></div>
+        </div>
+
+        <div class="section-title">
+            <span class="emoji">📅</span>
+            <h2>DAY OF WEEK ACTIVITY</h2>
+        </div>
+        <div class="chart-container">
+            <div class="chart-title"><span>📆</span> Messages by Day of Week</div>
+            <div class="bar-chart" id="dayChart"></div>
+        </div>
+    </div>
+
+    <div class="tab-content" id="funfacts">
+        <div class="section-title">
+            <span class="emoji">🎉</span>
+            <h2>FUN FACTS & INSIGHTS</h2>
+        </div>
+        <div class="fun-facts" id="funFactsContainer"></div>
+    </div>
+
+    <div class="tab-content" id="everyone">
+        <div class="section-title">
+            <span class="emoji">👥</span>
+            <h2>EVERYONE'S STATS</h2>
+        </div>
+        <div class="stats-grid" id="everyoneStats"></div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-logo">THE OBRUTS</div>
+        <p>Group Chat Stats - Generated with love</p>
+        <p style="margin-top: 10px; font-size: 0.8rem;">Data from November 25, 2024 to November 25, 2025</p>
+    </footer>
+
+    <script>
+        const stats = {
+  "total_messages": 19164,
+  "total_media": 2179,
+  "total_chars": 526580,
+  "by_person": {
+    "Youssef Tharwat\u2019s Brother": {
+      "messages": 629,
+      "media": 82,
+      "total_chars": 11639,
+      "active_days": [
+        "2025-05-16",
+        "2025-05-06",
+        "2025-04-24",
+        "2025-03-11",
+        "2025-04-07",
+        "2025-03-07",
+        "2025-10-27",
+        "2025-05-07",
+        "2025-01-12",
+        "2025-05-03",
+        "2025-06-17",
+        "2025-01-09",
+        "2025-07-22",
+        "2025-06-27",
+        "2025-04-04",
+        "2025-05-12",
+        "2025-06-10",
+        "2025-06-03",
+        "2025-03-22",
+        "2025-05-22",
+        "2025-04-06",
+        "2025-10-14",
+        "2024-12-07",
+        "2025-05-19",
+        "2025-01-10",
+        "2025-02-23",
+        "2025-07-12",
+        "2025-04-08",
+        "2025-05-01",
+        "2025-02-17",
+        "2025-03-18",
+        "2025-06-24",
+        "2025-04-12",
+        "2025-04-25",
+        "2025-03-28",
+        "2025-06-25",
+        "2025-07-11",
+        "2025-05-13",
+        "2025-04-21",
+        "2025-04-16",
+        "2025-06-26",
+        "2025-02-28",
+        "2025-05-09",
+        "2025-04-02",
+        "2025-04-03",
+        "2025-05-30",
+        "2025-04-29",
+        "2025-03-12",
+        "2025-04-17",
+        "2025-07-05",
+        "2025-02-24",
+        "2025-02-19",
+        "2025-05-17",
+        "2025-01-16",
+        "2025-04-18",
+        "2025-04-26",
+        "2025-01-15",
+        "2025-06-16",
+        "2025-07-29",
+        "2025-05-15",
+        "2025-02-11",
+        "2025-03-14",
+        "2025-02-25",
+        "2025-05-10",
+        "2025-06-14",
+        "2025-06-19",
+        "2025-01-11",
+        "2025-04-30",
+        "2025-03-01",
+        "2025-04-14",
+        "2025-02-06",
+        "2025-02-18",
+        "2025-04-09",
+        "2025-04-19",
+        "2025-05-25",
+        "2025-04-28",
+        "2025-03-21",
+        "2025-06-08",
+        "2025-05-02",
+        "2025-08-12",
+        "2025-04-05",
+        "2025-08-13",
+        "2025-03-30",
+        "2025-04-11",
+        "2025-04-22",
+        "2025-07-16",
+        "2025-02-10",
+        "2025-07-28",
+        "2025-07-23",
+        "2025-03-06",
+        "2025-06-18",
+        "2025-06-04",
+        "2025-01-14",
+        "2025-06-09",
+        "2025-06-07",
+        "2025-03-26",
+        "2025-06-11",
+        "2025-04-23",
+        "2025-07-17",
+        "2025-05-08",
+        "2025-02-26",
+        "2025-04-13",
+        "2025-03-31",
+        "2025-03-20",
+        "2025-01-13",
+        "2025-02-12",
+        "2025-10-25"
+      ],
+      "by_hour": [
+        16,
+        5,
+        0,
+        0,
+        0,
+        1,
+        1,
+        7,
+        15,
+        58,
+        30,
+        28,
+        22,
+        46,
+        42,
+        36,
+        38,
+        39,
+        86,
+        37,
+        34,
+        38,
+        28,
+        22
+      ],
+      "emojis": 68,
+      "questions": 58,
+      "laughs": 123,
+      "first_message": "2024-12-07T08:14:18",
+      "last_message": "2025-10-27T12:07:53",
+      "active_days_count": 107,
+      "avg_chars": 21,
+      "avg_response": 4.7,
+      "peak_hour": 18
+    },
+    "Sheshoy": {
+      "messages": 1397,
+      "media": 166,
+      "total_chars": 37006,
+      "active_days": [
+        "2025-05-16",
+        "2025-02-04",
+        "2025-04-24",
+        "2025-06-12",
+        "2025-03-11",
+        "2025-06-01",
+        "2025-09-29",
+        "2025-04-07",
+        "2025-05-31",
+        "2025-06-02",
+        "2025-11-23",
+        "2025-09-20",
+        "2025-03-07",
+        "2025-10-03",
+        "2025-10-11",
+        "2025-10-27",
+        "2025-06-23",
+        "2025-05-07",
+        "2025-01-12",
+        "2025-05-03",
+        "2025-01-09",
+        "2025-05-29",
+        "2025-07-22",
+        "2025-06-20",
+        "2025-06-27",
+        "2025-11-05",
+        "2025-04-04",
+        "2025-06-10",
+        "2025-06-03",
+        "2025-03-22",
+        "2025-08-03",
+        "2025-07-26",
+        "2025-10-26",
+        "2025-11-01",
+        "2025-07-08",
+        "2025-10-14",
+        "2025-02-09",
+        "2025-05-19",
+        "2025-06-06",
+        "2025-01-24",
+        "2025-01-10",
+        "2025-11-07",
+        "2025-02-23",
+        "2025-07-12",
+        "2025-10-31",
+        "2025-01-19",
+        "2025-06-05",
+        "2025-04-08",
+        "2025-03-02",
+        "2025-05-01",
+        "2025-02-17",
+        "2025-10-30",
+        "2025-06-24",
+        "2025-04-12",
+        "2025-08-10",
+        "2025-04-25",
+        "2025-07-02",
+        "2025-08-04",
+        "2025-06-13",
+        "2025-03-28",
+        "2025-06-25",
+        "2025-08-08",
+        "2025-07-11",
+        "2025-04-21",
+        "2025-06-21",
+        "2025-04-16",
+        "2025-06-26",
+        "2025-09-25",
+        "2025-09-28",
+        "2025-11-10",
+        "2025-05-09",
+        "2025-03-19",
+        "2025-08-05",
+        "2025-04-02",
+        "2025-01-17",
+        "2025-04-03",
+        "2025-07-14",
+        "2025-02-20",
+        "2025-05-30",
+        "2025-04-29",
+        "2025-03-12",
+        "2025-04-20",
+        "2025-09-21",
+        "2025-04-17",
+        "2025-07-05",
+        "2025-02-24",
+        "2025-11-19",
+        "2025-02-19",
+        "2024-12-12",
+        "2025-05-17",
+        "2025-10-13",
+        "2025-01-08",
+        "2025-05-23",
+        "2025-10-18",
+        "2025-07-10",
+        "2025-01-16",
+        "2025-04-18",
+        "2025-04-26",
+        "2025-01-15",
+        "2025-05-20",
+        "2025-07-29",
+        "2025-10-04",
+        "2025-08-01",
+        "2025-07-20",
+        "2025-10-16",
+        "2025-05-15",
+        "2025-02-11",
+        "2025-08-02",
+        "2025-07-06",
+        "2025-07-04",
+        "2025-02-25",
+        "2025-11-15",
+        "2025-05-10",
+        "2025-06-14",
+        "2025-11-20",
+        "2025-11-25",
+        "2025-02-07",
+        "2025-07-13",
+        "2025-10-05",
+        "2025-11-18",
+        "2025-01-11",
+        "2025-04-30",
+        "2025-02-03",
+        "2025-06-30",
+        "2025-07-18",
+        "2025-10-06",
+        "2025-10-28",
+        "2025-05-26",
+        "2025-02-18",
+        "2025-07-03",
+        "2025-04-19",
+        "2025-10-20",
+        "2024-12-19",
+        "2025-06-15",
+        "2025-05-25",
+        "2025-02-02",
+        "2025-08-09",
+        "2025-03-15",
+        "2025-03-21",
+        "2025-07-31",
+        "2025-05-02",
+        "2025-08-12",
+        "2025-10-21",
+        "2025-03-30",
+        "2025-04-11",
+        "2025-06-29",
+        "2025-04-22",
+        "2025-04-01",
+        "2025-10-09",
+        "2025-10-24",
+        "2025-09-26",
+        "2025-11-22",
+        "2025-10-07",
+        "2025-07-16",
+        "2024-12-18",
+        "2025-09-30",
+        "2025-11-24",
+        "2025-02-10",
+        "2025-07-28",
+        "2025-07-23",
+        "2025-11-02",
+        "2025-03-06",
+        "2025-06-04",
+        "2025-07-30",
+        "2025-01-14",
+        "2025-06-09",
+        "2025-02-08",
+        "2025-06-07",
+        "2025-10-08",
+        "2025-07-09",
+        "2025-06-28",
+        "2025-07-19",
+        "2025-03-26",
+        "2025-06-11",
+        "2025-04-23",
+        "2025-07-17",
+        "2025-05-08",
+        "2025-02-26",
+        "2025-04-13",
+        "2025-11-09",
+        "2025-07-24",
+        "2025-05-21",
+        "2025-05-28",
+        "2025-09-27",
+        "2025-07-01",
+        "2025-03-31",
+        "2025-05-14",
+        "2025-05-18",
+        "2025-07-27",
+        "2025-03-20",
+        "2025-10-01",
+        "2025-01-13",
+        "2025-02-12",
+        "2025-10-25",
+        "2025-10-10"
+      ],
+      "by_hour": [
+        41,
+        28,
+        7,
+        10,
+        2,
+        6,
+        2,
+        7,
+        16,
+        25,
+        44,
+        76,
+        103,
+        125,
+        90,
+        75,
+        100,
+        71,
+        114,
+        149,
+        107,
+        73,
+        69,
+        57
+      ],
+      "emojis": 165,
+      "questions": 122,
+      "laughs": 176,
+      "first_message": "2024-12-12T11:14:39",
+      "last_message": "2025-11-25T08:37:19",
+      "active_days_count": 195,
+      "avg_chars": 30,
+      "avg_response": 4.1,
+      "peak_hour": 19
+    },
+    "Rafi": {
+      "messages": 1597,
+      "media": 88,
+      "total_chars": 45208,
+      "active_days": [
+        "2025-06-12",
+        "2025-03-11",
+        "2025-04-07",
+        "2025-06-02",
+        "2025-09-20",
+        "2025-03-07",
+        "2025-10-03",
+        "2025-10-11",
+        "2025-10-27",
+        "2025-06-23",
+        "2025-01-12",
+        "2025-06-17",
+        "2025-01-09",
+        "2025-07-22",
+        "2025-06-20",
+        "2025-06-27",
+        "2025-11-05",
+        "2025-04-04",
+        "2025-06-10",
+        "2025-06-03",
+        "2025-03-22",
+        "2025-08-03",
+        "2025-05-22",
+        "2025-07-26",
+        "2025-10-26",
+        "2025-11-01",
+        "2025-07-08",
+        "2025-10-14",
+        "2025-03-25",
+        "2025-02-09",
+        "2025-05-19",
+        "2025-06-06",
+        "2025-08-07",
+        "2025-11-07",
+        "2025-01-10",
+        "2025-09-24",
+        "2025-02-23",
+        "2025-10-31",
+        "2025-01-19",
+        "2025-02-17",
+        "2025-10-30",
+        "2025-03-18",
+        "2025-06-24",
+        "2025-04-12",
+        "2025-08-10",
+        "2025-07-02",
+        "2025-08-04",
+        "2025-03-28",
+        "2025-08-08",
+        "2025-07-11",
+        "2025-05-13",
+        "2024-12-28",
+        "2025-06-21",
+        "2025-06-26",
+        "2025-02-28",
+        "2024-12-29",
+        "2025-09-25",
+        "2025-09-28",
+        "2025-11-10",
+        "2025-05-09",
+        "2025-03-19",
+        "2025-08-05",
+        "2025-04-02",
+        "2025-01-17",
+        "2025-04-03",
+        "2025-07-14",
+        "2025-11-03",
+        "2025-01-18",
+        "2025-05-30",
+        "2025-03-12",
+        "2025-09-21",
+        "2025-07-05",
+        "2025-02-24",
+        "2025-02-19",
+        "2024-12-12",
+        "2025-03-23",
+        "2025-10-13",
+        "2025-10-18",
+        "2025-01-16",
+        "2025-01-15",
+        "2025-06-16",
+        "2025-07-29",
+        "2025-10-04",
+        "2025-08-01",
+        "2025-07-20",
+        "2025-05-15",
+        "2025-08-02",
+        "2025-07-06",
+        "2025-07-04",
+        "2025-01-21",
+        "2025-02-25",
+        "2025-11-15",
+        "2025-05-10",
+        "2025-06-14",
+        "2025-02-07",
+        "2025-07-13",
+        "2025-10-05",
+        "2025-06-19",
+        "2025-01-11",
+        "2025-02-03",
+        "2025-03-01",
+        "2025-06-22",
+        "2025-06-30",
+        "2025-07-18",
+        "2025-07-15",
+        "2025-10-28",
+        "2025-10-20",
+        "2025-07-03",
+        "2024-12-19",
+        "2025-05-25",
+        "2025-02-02",
+        "2025-10-22",
+        "2025-07-07",
+        "2025-08-09",
+        "2025-10-12",
+        "2025-07-31",
+        "2025-08-12",
+        "2025-09-22",
+        "2025-10-21",
+        "2025-08-13",
+        "2025-04-11",
+        "2025-06-29",
+        "2025-04-01",
+        "2025-10-24",
+        "2025-09-26",
+        "2025-10-07",
+        "2025-07-16",
+        "2025-10-15",
+        "2025-09-30",
+        "2025-02-10",
+        "2025-07-28",
+        "2025-07-23",
+        "2025-03-06",
+        "2025-06-18",
+        "2025-07-30",
+        "2025-01-14",
+        "2025-06-09",
+        "2025-02-08",
+        "2025-06-07",
+        "2025-11-06",
+        "2025-10-08",
+        "2025-07-09",
+        "2025-06-28",
+        "2025-07-19",
+        "2025-03-26",
+        "2025-06-11",
+        "2025-10-29",
+        "2025-07-17",
+        "2025-02-26",
+        "2025-11-09",
+        "2025-09-27",
+        "2025-07-01",
+        "2025-05-14",
+        "2025-07-27",
+        "2025-10-01",
+        "2025-03-20",
+        "2025-01-13",
+        "2025-02-12",
+        "2025-10-25",
+        "2025-10-10"
+      ],
+      "by_hour": [
+        48,
+        48,
+        12,
+        0,
+        0,
+        0,
+        12,
+        34,
+        45,
+        72,
+        76,
+        54,
+        110,
+        108,
+        130,
+        80,
+        120,
+        103,
+        101,
+        114,
+        125,
+        92,
+        82,
+        31
+      ],
+      "emojis": 207,
+      "questions": 141,
+      "laughs": 328,
+      "first_message": "2024-12-12T11:19:40",
+      "last_message": "2025-11-15T20:53:17",
+      "active_days_count": 160,
+      "avg_chars": 30,
+      "avg_response": 4.6,
+      "peak_hour": 14
+    },
+    "Fady B": {
+      "messages": 810,
+      "media": 20,
+      "total_chars": 26297,
+      "active_days": [
+        "2025-05-06",
+        "2025-04-24",
+        "2025-06-12",
+        "2025-03-11",
+        "2025-06-01",
+        "2025-04-07",
+        "2025-05-31",
+        "2025-09-20",
+        "2025-03-07",
+        "2025-02-05",
+        "2025-10-27",
+        "2025-06-23",
+        "2025-05-07",
+        "2025-01-12",
+        "2025-05-03",
+        "2025-06-17",
+        "2025-01-09",
+        "2025-03-29",
+        "2025-06-20",
+        "2025-06-27",
+        "2025-11-05",
+        "2025-04-04",
+        "2025-05-12",
+        "2025-04-15",
+        "2025-06-10",
+        "2025-06-03",
+        "2025-03-22",
+        "2025-04-06",
+        "2025-10-26",
+        "2025-11-01",
+        "2025-07-08",
+        "2025-02-09",
+        "2025-03-17",
+        "2025-05-19",
+        "2025-01-24",
+        "2025-01-10",
+        "2025-02-23",
+        "2025-07-12",
+        "2025-10-31",
+        "2025-06-05",
+        "2025-04-08",
+        "2025-03-02",
+        "2025-05-01",
+        "2025-02-17",
+        "2025-10-30",
+        "2025-03-18",
+        "2025-06-24",
+        "2025-04-12",
+        "2025-08-10",
+        "2025-04-25",
+        "2025-07-02",
+        "2025-06-13",
+        "2025-03-28",
+        "2025-06-25",
+        "2025-08-08",
+        "2025-07-11",
+        "2024-12-28",
+        "2025-06-21",
+        "2025-02-28",
+        "2025-03-19",
+        "2025-04-02",
+        "2025-01-17",
+        "2025-04-03",
+        "2025-07-14",
+        "2025-11-03",
+        "2025-05-30",
+        "2025-04-29",
+        "2025-04-10",
+        "2025-05-24",
+        "2025-09-21",
+        "2025-04-17",
+        "2025-07-05",
+        "2025-02-24",
+        "2025-02-19",
+        "2024-12-12",
+        "2025-10-13",
+        "2025-03-03",
+        "2025-01-08",
+        "2025-10-18",
+        "2025-07-10",
+        "2025-01-16",
+        "2025-04-26",
+        "2025-01-15",
+        "2025-10-04",
+        "2025-05-15",
+        "2025-07-06",
+        "2025-07-04",
+        "2025-01-21",
+        "2025-03-14",
+        "2025-02-25",
+        "2025-11-15",
+        "2025-05-10",
+        "2025-06-14",
+        "2025-11-20",
+        "2025-02-07",
+        "2025-07-13",
+        "2025-06-19",
+        "2025-01-11",
+        "2025-04-30",
+        "2025-06-22",
+        "2025-03-08",
+        "2025-06-30",
+        "2025-07-15",
+        "2025-10-28",
+        "2025-10-20",
+        "2025-02-18",
+        "2025-07-03",
+        "2025-04-09",
+        "2025-04-19",
+        "2024-12-19",
+        "2025-06-15",
+        "2025-05-25",
+        "2025-02-02",
+        "2025-07-07",
+        "2025-08-09",
+        "2025-05-02",
+        "2025-04-05",
+        "2025-03-30",
+        "2025-04-11",
+        "2025-06-29",
+        "2025-04-22",
+        "2025-04-01",
+        "2025-09-26",
+        "2025-11-22",
+        "2025-09-23",
+        "2025-10-19",
+        "2025-07-16",
+        "2025-11-24",
+        "2025-02-10",
+        "2025-03-06",
+        "2025-06-18",
+        "2025-06-04",
+        "2025-01-14",
+        "2025-06-09",
+        "2025-02-08",
+        "2025-06-07",
+        "2025-11-06",
+        "2025-10-08",
+        "2025-07-09",
+        "2025-06-28",
+        "2025-07-19",
+        "2025-03-26",
+        "2025-06-11",
+        "2025-03-27",
+        "2025-04-23",
+        "2025-10-29",
+        "2025-05-08",
+        "2025-02-26",
+        "2025-04-13",
+        "2025-05-21",
+        "2025-07-01",
+        "2025-03-31",
+        "2025-05-14",
+        "2025-10-01",
+        "2025-03-20",
+        "2025-01-13",
+        "2025-02-12",
+        "2025-10-25"
+      ],
+      "by_hour": [
+        45,
+        43,
+        0,
+        0,
+        2,
+        0,
+        0,
+        10,
+        8,
+        20,
+        61,
+        33,
+        42,
+        75,
+        67,
+        46,
+        57,
+        48,
+        41,
+        57,
+        45,
+        60,
+        22,
+        28
+      ],
+      "emojis": 128,
+      "questions": 99,
+      "laughs": 169,
+      "first_message": "2024-12-12T11:21:03",
+      "last_message": "2025-11-24T21:55:09",
+      "active_days_count": 158,
+      "avg_chars": 33,
+      "avg_response": 3.0,
+      "peak_hour": 13
+    },
+    "Besho": {
+      "messages": 3180,
+      "media": 346,
+      "total_chars": 65710,
+      "active_days": [
+        "2025-05-16",
+        "2025-04-24",
+        "2025-06-12",
+        "2025-03-11",
+        "2025-06-01",
+        "2025-09-29",
+        "2025-04-07",
+        "2025-05-31",
+        "2025-06-02",
+        "2025-11-23",
+        "2025-09-20",
+        "2025-03-07",
+        "2025-10-03",
+        "2025-02-05",
+        "2025-10-11",
+        "2025-10-27",
+        "2025-06-23",
+        "2025-05-07",
+        "2025-01-12",
+        "2025-05-03",
+        "2025-06-17",
+        "2025-11-16",
+        "2025-01-09",
+        "2025-05-29",
+        "2025-07-22",
+        "2025-06-20",
+        "2025-06-27",
+        "2025-11-05",
+        "2025-04-04",
+        "2025-05-12",
+        "2025-04-15",
+        "2025-06-10",
+        "2025-06-03",
+        "2025-03-22",
+        "2025-10-17",
+        "2025-08-03",
+        "2025-07-26",
+        "2025-04-06",
+        "2025-10-26",
+        "2025-11-01",
+        "2025-11-04",
+        "2025-07-08",
+        "2025-10-14",
+        "2025-03-25",
+        "2025-02-09",
+        "2025-05-19",
+        "2025-06-06",
+        "2025-08-07",
+        "2025-01-24",
+        "2025-01-10",
+        "2025-11-07",
+        "2025-09-24",
+        "2025-02-23",
+        "2025-07-12",
+        "2025-10-31",
+        "2025-01-19",
+        "2025-06-05",
+        "2025-04-08",
+        "2025-03-02",
+        "2025-05-01",
+        "2025-02-17",
+        "2025-10-30",
+        "2025-03-18",
+        "2025-06-24",
+        "2025-11-13",
+        "2025-10-02",
+        "2025-04-12",
+        "2025-07-21",
+        "2025-08-10",
+        "2025-04-25",
+        "2025-07-02",
+        "2025-08-04",
+        "2025-03-09",
+        "2025-06-13",
+        "2025-03-28",
+        "2025-06-25",
+        "2025-08-08",
+        "2025-07-11",
+        "2025-05-13",
+        "2025-04-21",
+        "2025-06-21",
+        "2025-06-26",
+        "2025-02-28",
+        "2024-12-29",
+        "2025-05-05",
+        "2025-09-25",
+        "2025-09-28",
+        "2025-11-10",
+        "2025-05-09",
+        "2025-10-23",
+        "2025-03-19",
+        "2025-08-05",
+        "2025-04-02",
+        "2025-01-17",
+        "2025-04-03",
+        "2025-07-14",
+        "2025-02-20",
+        "2025-05-30",
+        "2025-04-29",
+        "2025-11-03",
+        "2025-04-10",
+        "2025-03-12",
+        "2025-04-20",
+        "2025-11-08",
+        "2025-05-24",
+        "2025-09-21",
+        "2025-04-17",
+        "2025-07-05",
+        "2025-02-24",
+        "2025-11-19",
+        "2025-05-17",
+        "2025-10-13",
+        "2025-05-23",
+        "2025-10-18",
+        "2025-07-10",
+        "2025-01-16",
+        "2025-04-18",
+        "2025-04-26",
+        "2025-01-15",
+        "2025-05-20",
+        "2025-06-16",
+        "2025-07-29",
+        "2025-10-04",
+        "2025-08-01",
+        "2025-07-20",
+        "2025-11-17",
+        "2025-10-16",
+        "2025-02-11",
+        "2025-08-02",
+        "2025-07-06",
+        "2025-07-04",
+        "2025-03-14",
+        "2025-02-25",
+        "2025-11-15",
+        "2025-05-10",
+        "2025-04-27",
+        "2025-06-14",
+        "2025-11-20",
+        "2025-07-13",
+        "2025-11-14",
+        "2025-10-05",
+        "2025-06-19",
+        "2025-01-29",
+        "2025-01-11",
+        "2025-04-30",
+        "2025-11-18",
+        "2025-02-03",
+        "2025-03-01",
+        "2025-06-22",
+        "2025-06-30",
+        "2025-07-18",
+        "2025-10-06",
+        "2025-07-15",
+        "2025-05-04",
+        "2025-04-14",
+        "2025-10-28",
+        "2025-02-06",
+        "2025-05-26",
+        "2025-07-03",
+        "2025-10-20",
+        "2025-04-19",
+        "2025-11-21",
+        "2025-06-15",
+        "2025-05-25",
+        "2025-02-02",
+        "2025-10-22",
+        "2025-07-07",
+        "2025-08-09",
+        "2025-03-21",
+        "2025-10-12",
+        "2025-06-08",
+        "2025-07-31",
+        "2025-05-02",
+        "2025-08-12",
+        "2025-04-05",
+        "2025-09-22",
+        "2025-10-21",
+        "2025-08-13",
+        "2025-03-30",
+        "2025-04-11",
+        "2025-06-29",
+        "2025-04-22",
+        "2025-08-06",
+        "2025-04-01",
+        "2025-10-09",
+        "2025-10-24",
+        "2025-09-26",
+        "2025-11-22",
+        "2025-10-07",
+        "2025-07-16",
+        "2025-10-19",
+        "2024-12-18",
+        "2025-09-30",
+        "2025-10-15",
+        "2025-11-24",
+        "2025-02-10",
+        "2025-07-28",
+        "2025-07-23",
+        "2025-11-02",
+        "2025-03-06",
+        "2025-06-18",
+        "2025-06-04",
+        "2025-01-14",
+        "2025-06-09",
+        "2025-06-07",
+        "2025-11-06",
+        "2025-10-08",
+        "2025-07-09",
+        "2025-06-28",
+        "2025-07-19",
+        "2025-03-26",
+        "2025-06-11",
+        "2025-10-29",
+        "2025-04-23",
+        "2025-07-17",
+        "2025-05-08",
+        "2025-02-26",
+        "2025-04-13",
+        "2025-11-09",
+        "2025-07-24",
+        "2025-05-21",
+        "2025-05-28",
+        "2025-09-27",
+        "2025-07-01",
+        "2025-03-31",
+        "2025-05-14",
+        "2025-05-18",
+        "2025-07-27",
+        "2025-03-20",
+        "2025-08-11",
+        "2025-01-13",
+        "2025-02-12",
+        "2025-10-01",
+        "2025-10-25",
+        "2025-10-10"
+      ],
+      "by_hour": [
+        75,
+        21,
+        38,
+        11,
+        0,
+        3,
+        31,
+        75,
+        76,
+        205,
+        183,
+        152,
+        160,
+        183,
+        207,
+        204,
+        251,
+        216,
+        197,
+        256,
+        251,
+        159,
+        107,
+        119
+      ],
+      "emojis": 159,
+      "questions": 359,
+      "laughs": 364,
+      "first_message": "2024-12-18T10:40:20",
+      "last_message": "2025-11-24T21:12:35",
+      "active_days_count": 235,
+      "avg_chars": 23,
+      "avg_response": 3.3,
+      "peak_hour": 19
+    },
+    "Andro": {
+      "messages": 1463,
+      "media": 219,
+      "total_chars": 43073,
+      "active_days": [
+        "2025-05-06",
+        "2025-04-24",
+        "2025-06-12",
+        "2025-06-01",
+        "2025-09-29",
+        "2025-04-07",
+        "2025-05-31",
+        "2025-06-02",
+        "2025-11-23",
+        "2025-10-03",
+        "2025-10-11",
+        "2025-10-27",
+        "2025-06-23",
+        "2025-05-07",
+        "2025-01-12",
+        "2025-05-03",
+        "2025-06-17",
+        "2025-11-16",
+        "2025-01-09",
+        "2025-07-22",
+        "2025-06-20",
+        "2025-11-05",
+        "2025-04-04",
+        "2025-06-10",
+        "2025-06-03",
+        "2025-03-22",
+        "2025-10-17",
+        "2025-08-03",
+        "2025-05-22",
+        "2025-07-26",
+        "2025-04-06",
+        "2025-10-26",
+        "2025-11-01",
+        "2025-07-08",
+        "2025-02-09",
+        "2025-03-17",
+        "2025-05-19",
+        "2025-06-06",
+        "2025-08-07",
+        "2025-11-07",
+        "2025-01-10",
+        "2025-02-23",
+        "2025-07-12",
+        "2025-10-31",
+        "2025-06-05",
+        "2025-04-08",
+        "2025-05-01",
+        "2025-02-17",
+        "2025-03-18",
+        "2025-10-02",
+        "2025-04-12",
+        "2025-07-21",
+        "2025-08-10",
+        "2025-04-25",
+        "2025-07-02",
+        "2025-08-04",
+        "2025-03-09",
+        "2025-06-13",
+        "2025-03-28",
+        "2025-07-11",
+        "2025-05-13",
+        "2025-04-21",
+        "2025-06-21",
+        "2025-04-16",
+        "2025-09-25",
+        "2025-09-28",
+        "2025-11-10",
+        "2025-05-09",
+        "2025-10-23",
+        "2025-03-19",
+        "2025-08-05",
+        "2025-04-02",
+        "2025-04-03",
+        "2025-07-14",
+        "2025-04-29",
+        "2025-04-20",
+        "2025-05-24",
+        "2025-09-21",
+        "2025-04-17",
+        "2025-07-05",
+        "2025-02-24",
+        "2025-11-19",
+        "2025-02-19",
+        "2025-10-13",
+        "2025-01-08",
+        "2025-05-23",
+        "2025-10-18",
+        "2025-07-10",
+        "2025-01-16",
+        "2025-04-18",
+        "2025-04-26",
+        "2025-01-15",
+        "2025-05-20",
+        "2025-06-16",
+        "2025-07-29",
+        "2025-10-04",
+        "2025-08-01",
+        "2025-07-20",
+        "2025-11-17",
+        "2025-05-15",
+        "2025-02-11",
+        "2025-07-06",
+        "2025-07-04",
+        "2025-03-14",
+        "2025-02-25",
+        "2025-11-15",
+        "2025-05-10",
+        "2025-06-14",
+        "2025-02-07",
+        "2025-07-13",
+        "2025-11-14",
+        "2025-10-05",
+        "2025-01-11",
+        "2025-04-30",
+        "2025-02-03",
+        "2025-03-01",
+        "2025-06-30",
+        "2025-07-18",
+        "2025-10-06",
+        "2025-07-15",
+        "2025-05-04",
+        "2025-04-14",
+        "2025-10-28",
+        "2025-05-26",
+        "2025-07-03",
+        "2025-10-20",
+        "2025-04-19",
+        "2025-06-15",
+        "2025-05-25",
+        "2025-02-02",
+        "2025-10-22",
+        "2025-07-07",
+        "2025-08-09",
+        "2025-03-21",
+        "2025-10-12",
+        "2025-06-08",
+        "2025-07-31",
+        "2025-05-02",
+        "2025-08-12",
+        "2025-04-05",
+        "2025-10-21",
+        "2025-08-13",
+        "2025-03-30",
+        "2025-04-11",
+        "2025-06-29",
+        "2025-04-01",
+        "2025-11-22",
+        "2025-09-23",
+        "2025-10-07",
+        "2025-07-16",
+        "2025-10-19",
+        "2024-12-18",
+        "2025-09-30",
+        "2025-10-15",
+        "2025-11-24",
+        "2025-02-10",
+        "2025-07-28",
+        "2025-07-23",
+        "2025-03-06",
+        "2025-06-18",
+        "2025-06-04",
+        "2025-07-30",
+        "2025-01-14",
+        "2025-06-09",
+        "2025-02-08",
+        "2025-10-08",
+        "2025-06-28",
+        "2025-07-19",
+        "2025-06-11",
+        "2025-03-27",
+        "2025-04-23",
+        "2025-07-17",
+        "2025-05-08",
+        "2025-02-26",
+        "2025-10-29",
+        "2025-04-13",
+        "2025-11-09",
+        "2025-05-21",
+        "2025-03-31",
+        "2025-05-14",
+        "2025-07-27",
+        "2025-10-01",
+        "2025-03-20",
+        "2025-01-13",
+        "2025-02-12",
+        "2025-10-25",
+        "2025-10-10"
+      ],
+      "by_hour": [
+        62,
+        56,
+        4,
+        18,
+        6,
+        3,
+        10,
+        13,
+        26,
+        36,
+        15,
+        49,
+        98,
+        98,
+        83,
+        91,
+        100,
+        107,
+        158,
+        87,
+        87,
+        84,
+        99,
+        73
+      ],
+      "emojis": 122,
+      "questions": 154,
+      "laughs": 101,
+      "first_message": "2024-12-18T17:37:31",
+      "last_message": "2025-11-24T21:29:09",
+      "active_days_count": 187,
+      "avg_chars": 35,
+      "avg_response": 3.2,
+      "peak_hour": 18
+    },
+    "Fady H": {
+      "messages": 476,
+      "media": 35,
+      "total_chars": 10681,
+      "active_days": [
+        "2025-05-16",
+        "2025-05-06",
+        "2025-06-12",
+        "2025-04-07",
+        "2025-05-31",
+        "2025-06-02",
+        "2025-09-20",
+        "2025-10-27",
+        "2025-06-23",
+        "2025-05-07",
+        "2025-01-12",
+        "2025-05-03",
+        "2025-06-17",
+        "2025-01-09",
+        "2025-06-20",
+        "2025-11-05",
+        "2025-04-04",
+        "2025-06-03",
+        "2025-03-22",
+        "2025-08-03",
+        "2025-05-22",
+        "2025-11-01",
+        "2025-07-08",
+        "2025-05-19",
+        "2025-01-24",
+        "2025-01-10",
+        "2025-11-07",
+        "2025-02-23",
+        "2025-10-31",
+        "2025-01-19",
+        "2025-06-24",
+        "2025-11-13",
+        "2025-04-12",
+        "2025-04-25",
+        "2025-08-04",
+        "2025-03-09",
+        "2025-06-13",
+        "2025-08-08",
+        "2025-05-13",
+        "2025-04-21",
+        "2025-06-21",
+        "2025-09-25",
+        "2025-09-28",
+        "2025-11-10",
+        "2025-05-09",
+        "2025-03-19",
+        "2025-08-05",
+        "2025-04-03",
+        "2025-11-03",
+        "2025-03-12",
+        "2025-04-20",
+        "2025-09-21",
+        "2025-07-05",
+        "2025-02-24",
+        "2025-01-16",
+        "2025-04-18",
+        "2025-01-15",
+        "2025-06-16",
+        "2025-07-29",
+        "2025-07-06",
+        "2025-07-04",
+        "2025-03-14",
+        "2025-02-25",
+        "2025-11-15",
+        "2025-06-14",
+        "2025-11-20",
+        "2025-10-05",
+        "2025-06-19",
+        "2025-01-11",
+        "2025-04-30",
+        "2025-06-30",
+        "2025-07-18",
+        "2025-05-04",
+        "2025-05-26",
+        "2025-07-03",
+        "2025-10-20",
+        "2025-04-19",
+        "2024-12-19",
+        "2025-06-15",
+        "2025-05-25",
+        "2025-02-02",
+        "2025-10-22",
+        "2025-07-07",
+        "2025-08-09",
+        "2025-08-12",
+        "2025-09-22",
+        "2025-10-21",
+        "2025-08-13",
+        "2025-03-30",
+        "2025-04-11",
+        "2025-06-29",
+        "2025-08-06",
+        "2025-07-16",
+        "2025-10-15",
+        "2025-09-30",
+        "2025-07-23",
+        "2025-11-02",
+        "2025-06-04",
+        "2025-01-14",
+        "2025-07-09",
+        "2025-06-28",
+        "2025-03-26",
+        "2025-10-29",
+        "2025-04-23",
+        "2025-05-08",
+        "2025-04-13",
+        "2025-11-09",
+        "2025-03-31",
+        "2025-05-14",
+        "2025-08-11",
+        "2025-10-01",
+        "2025-03-20",
+        "2025-01-13",
+        "2025-02-12",
+        "2025-10-25",
+        "2025-10-10"
+      ],
+      "by_hour": [
+        12,
+        22,
+        3,
+        0,
+        3,
+        0,
+        0,
+        4,
+        5,
+        9,
+        11,
+        41,
+        28,
+        25,
+        40,
+        43,
+        30,
+        26,
+        55,
+        36,
+        36,
+        23,
+        18,
+        6
+      ],
+      "emojis": 50,
+      "questions": 17,
+      "laughs": 41,
+      "first_message": "2024-12-19T16:25:36",
+      "last_message": "2025-11-20T20:49:09",
+      "active_days_count": 116,
+      "avg_chars": 24,
+      "avg_response": 4.4,
+      "peak_hour": 18
+    },
+    "David": {
+      "messages": 694,
+      "media": 80,
+      "total_chars": 18260,
+      "active_days": [
+        "2025-05-06",
+        "2025-04-24",
+        "2025-06-12",
+        "2025-09-29",
+        "2025-04-07",
+        "2025-10-03",
+        "2025-10-27",
+        "2025-06-23",
+        "2025-01-12",
+        "2025-05-03",
+        "2025-01-09",
+        "2025-07-22",
+        "2025-11-05",
+        "2025-04-04",
+        "2025-05-12",
+        "2025-06-03",
+        "2025-03-22",
+        "2025-10-17",
+        "2025-08-03",
+        "2025-05-22",
+        "2025-07-26",
+        "2025-04-06",
+        "2025-10-26",
+        "2025-11-01",
+        "2025-07-08",
+        "2025-02-09",
+        "2025-05-19",
+        "2025-11-07",
+        "2025-01-10",
+        "2025-09-24",
+        "2025-02-23",
+        "2025-10-31",
+        "2025-01-19",
+        "2025-10-02",
+        "2025-04-12",
+        "2025-07-21",
+        "2025-08-04",
+        "2025-03-09",
+        "2025-06-13",
+        "2025-03-28",
+        "2025-08-08",
+        "2025-05-13",
+        "2025-04-21",
+        "2025-09-25",
+        "2025-02-28",
+        "2025-09-28",
+        "2025-10-23",
+        "2025-08-05",
+        "2025-04-02",
+        "2025-01-17",
+        "2025-04-03",
+        "2025-07-14",
+        "2025-11-03",
+        "2025-04-29",
+        "2025-04-10",
+        "2025-04-20",
+        "2025-05-24",
+        "2025-09-21",
+        "2025-07-05",
+        "2025-02-24",
+        "2025-02-19",
+        "2025-10-13",
+        "2025-07-10",
+        "2025-01-16",
+        "2025-04-18",
+        "2025-01-15",
+        "2025-07-29",
+        "2025-10-04",
+        "2025-08-02",
+        "2025-07-06",
+        "2025-07-04",
+        "2025-02-25",
+        "2025-11-15",
+        "2025-05-10",
+        "2025-06-14",
+        "2025-11-20",
+        "2025-11-25",
+        "2025-02-07",
+        "2025-11-14",
+        "2025-10-05",
+        "2025-06-19",
+        "2025-01-11",
+        "2025-04-30",
+        "2025-02-03",
+        "2025-03-01",
+        "2025-06-30",
+        "2025-10-06",
+        "2025-05-04",
+        "2025-10-28",
+        "2025-05-26",
+        "2025-02-18",
+        "2025-07-03",
+        "2025-04-19",
+        "2025-10-20",
+        "2024-12-19",
+        "2025-06-15",
+        "2025-02-02",
+        "2025-10-22",
+        "2025-07-07",
+        "2025-08-12",
+        "2025-09-22",
+        "2025-10-21",
+        "2025-03-30",
+        "2025-04-11",
+        "2025-10-24",
+        "2025-10-09",
+        "2025-09-26",
+        "2025-10-07",
+        "2025-07-16",
+        "2025-10-15",
+        "2025-07-28",
+        "2025-07-23",
+        "2025-11-02",
+        "2025-03-06",
+        "2025-06-18",
+        "2025-07-30",
+        "2025-01-14",
+        "2025-06-09",
+        "2025-02-08",
+        "2025-06-07",
+        "2025-07-09",
+        "2025-06-28",
+        "2025-03-26",
+        "2025-10-29",
+        "2025-04-23",
+        "2025-07-17",
+        "2025-05-08",
+        "2025-11-09",
+        "2025-05-21",
+        "2025-07-01",
+        "2025-05-14",
+        "2025-07-27",
+        "2025-10-01",
+        "2025-01-13",
+        "2025-02-12",
+        "2025-10-25",
+        "2025-10-10"
+      ],
+      "by_hour": [
+        19,
+        70,
+        2,
+        6,
+        1,
+        0,
+        2,
+        21,
+        8,
+        39,
+        22,
+        29,
+        45,
+        47,
+        52,
+        24,
+        62,
+        40,
+        37,
+        33,
+        55,
+        27,
+        28,
+        25
+      ],
+      "emojis": 37,
+      "questions": 85,
+      "laughs": 32,
+      "first_message": "2024-12-19T16:28:05",
+      "last_message": "2025-11-25T03:58:01",
+      "active_days_count": 137,
+      "avg_chars": 30,
+      "avg_response": 3.7,
+      "peak_hour": 1
+    },
+    "Meena": {
+      "messages": 255,
+      "media": 32,
+      "total_chars": 6287,
+      "active_days": [
+        "2025-10-31",
+        "2025-05-16",
+        "2025-04-08",
+        "2025-06-05",
+        "2025-07-10",
+        "2025-05-02",
+        "2025-06-01",
+        "2025-04-07",
+        "2025-05-31",
+        "2025-06-24",
+        "2025-09-20",
+        "2025-10-03",
+        "2025-04-12",
+        "2025-04-25",
+        "2025-10-11",
+        "2025-05-20",
+        "2025-07-02",
+        "2025-04-11",
+        "2025-06-29",
+        "2025-04-22",
+        "2025-06-25",
+        "2025-08-08",
+        "2025-01-12",
+        "2025-05-13",
+        "2025-05-03",
+        "2025-10-04",
+        "2025-04-21",
+        "2025-06-21",
+        "2025-01-09",
+        "2025-09-25",
+        "2025-09-28",
+        "2025-07-06",
+        "2025-07-04",
+        "2025-06-20",
+        "2025-11-02",
+        "2024-12-21",
+        "2025-06-04",
+        "2025-05-09",
+        "2025-05-10",
+        "2025-11-05",
+        "2025-11-15",
+        "2025-08-05",
+        "2025-04-15",
+        "2025-10-13",
+        "2025-10-08",
+        "2025-07-09",
+        "2025-06-28",
+        "2025-04-30",
+        "2025-10-29",
+        "2025-05-30",
+        "2025-04-29",
+        "2025-05-08",
+        "2025-11-03",
+        "2025-11-01",
+        "2025-04-13",
+        "2025-11-09",
+        "2025-07-08",
+        "2025-10-27",
+        "2025-04-14",
+        "2025-05-21",
+        "2025-09-21",
+        "2025-04-17",
+        "2025-07-01",
+        "2025-05-14",
+        "2025-08-07",
+        "2025-10-01",
+        "2025-07-03",
+        "2025-11-07",
+        "2025-11-19",
+        "2025-05-25",
+        "2025-10-10",
+        "2025-07-07"
+      ],
+      "by_hour": [
+        11,
+        1,
+        0,
+        2,
+        3,
+        0,
+        0,
+        3,
+        2,
+        24,
+        7,
+        21,
+        8,
+        12,
+        11,
+        10,
+        11,
+        28,
+        16,
+        30,
+        17,
+        13,
+        15,
+        10
+      ],
+      "emojis": 51,
+      "questions": 21,
+      "laughs": 10,
+      "first_message": "2024-12-21T16:37:08",
+      "last_message": "2025-11-19T17:22:31",
+      "active_days_count": 72,
+      "avg_chars": 28,
+      "avg_response": 4.3,
+      "peak_hour": 19
+    },
+    "Tharwat": {
+      "messages": 906,
+      "media": 62,
+      "total_chars": 26940,
+      "active_days": [
+        "2025-05-16",
+        "2025-05-06",
+        "2025-04-24",
+        "2025-06-12",
+        "2025-03-11",
+        "2025-04-07",
+        "2025-06-02",
+        "2025-09-20",
+        "2025-10-03",
+        "2025-10-27",
+        "2025-06-23",
+        "2025-05-07",
+        "2025-01-12",
+        "2025-05-03",
+        "2025-01-09",
+        "2025-07-22",
+        "2025-06-27",
+        "2025-04-04",
+        "2025-05-12",
+        "2025-06-03",
+        "2025-03-22",
+        "2025-05-22",
+        "2025-10-26",
+        "2025-11-01",
+        "2025-07-08",
+        "2025-03-25",
+        "2025-02-09",
+        "2025-03-17",
+        "2025-05-19",
+        "2025-01-24",
+        "2025-01-10",
+        "2025-11-07",
+        "2025-02-23",
+        "2025-10-31",
+        "2025-06-05",
+        "2025-02-17",
+        "2025-06-24",
+        "2025-10-02",
+        "2025-04-12",
+        "2025-04-25",
+        "2025-07-02",
+        "2025-08-04",
+        "2025-06-13",
+        "2025-03-28",
+        "2025-05-13",
+        "2024-12-28",
+        "2025-04-21",
+        "2025-06-21",
+        "2025-04-16",
+        "2025-06-26",
+        "2025-02-28",
+        "2025-09-25",
+        "2025-05-09",
+        "2025-08-05",
+        "2025-01-17",
+        "2025-04-03",
+        "2025-07-14",
+        "2025-05-30",
+        "2025-04-29",
+        "2025-03-12",
+        "2025-04-20",
+        "2025-11-08",
+        "2025-09-21",
+        "2025-04-17",
+        "2025-07-05",
+        "2025-02-24",
+        "2025-05-17",
+        "2025-01-08",
+        "2025-10-18",
+        "2025-01-16",
+        "2025-04-18",
+        "2025-01-15",
+        "2025-07-29",
+        "2025-10-04",
+        "2025-08-01",
+        "2025-07-20",
+        "2025-02-11",
+        "2025-07-06",
+        "2025-02-25",
+        "2025-11-15",
+        "2025-05-10",
+        "2025-06-14",
+        "2025-11-20",
+        "2025-02-07",
+        "2025-07-13",
+        "2025-01-11",
+        "2025-04-30",
+        "2025-10-06",
+        "2025-07-15",
+        "2025-10-28",
+        "2025-10-20",
+        "2025-07-03",
+        "2025-04-09",
+        "2025-04-19",
+        "2025-06-15",
+        "2025-11-21",
+        "2025-02-02",
+        "2025-07-07",
+        "2025-03-15",
+        "2025-03-21",
+        "2025-05-02",
+        "2025-08-12",
+        "2025-04-05",
+        "2025-09-22",
+        "2025-10-21",
+        "2025-03-30",
+        "2025-04-11",
+        "2025-06-29",
+        "2025-04-22",
+        "2025-04-01",
+        "2025-10-24",
+        "2025-09-26",
+        "2025-11-22",
+        "2025-10-07",
+        "2025-07-16",
+        "2025-10-19",
+        "2025-11-24",
+        "2025-02-10",
+        "2025-07-28",
+        "2025-07-23",
+        "2025-11-02",
+        "2025-06-18",
+        "2025-06-04",
+        "2025-01-14",
+        "2025-06-09",
+        "2025-02-08",
+        "2025-10-08",
+        "2025-07-09",
+        "2025-07-19",
+        "2025-03-26",
+        "2025-10-29",
+        "2025-04-23",
+        "2025-07-17",
+        "2025-05-08",
+        "2025-02-26",
+        "2025-11-09",
+        "2025-05-21",
+        "2025-05-28",
+        "2025-07-01",
+        "2025-03-31",
+        "2025-05-14",
+        "2025-05-18",
+        "2025-07-27",
+        "2025-03-20",
+        "2025-01-13",
+        "2025-10-10"
+      ],
+      "by_hour": [
+        17,
+        23,
+        2,
+        4,
+        4,
+        2,
+        13,
+        15,
+        25,
+        51,
+        16,
+        46,
+        56,
+        52,
+        80,
+        40,
+        110,
+        33,
+        77,
+        71,
+        100,
+        36,
+        15,
+        18
+      ],
+      "emojis": 91,
+      "questions": 103,
+      "laughs": 145,
+      "first_message": "2024-12-28T23:36:33",
+      "last_message": "2025-11-24T20:18:53",
+      "active_days_count": 146,
+      "avg_chars": 32,
+      "avg_response": 4.2,
+      "peak_hour": 16
+    },
+    "Thomas hanna David\u2019s Brother": {
+      "messages": 599,
+      "media": 34,
+      "total_chars": 10465,
+      "active_days": [
+        "2025-05-16",
+        "2025-06-12",
+        "2025-04-07",
+        "2025-06-02",
+        "2025-10-03",
+        "2025-03-07",
+        "2025-02-05",
+        "2025-06-23",
+        "2025-01-12",
+        "2025-05-03",
+        "2025-01-09",
+        "2025-11-05",
+        "2025-04-04",
+        "2025-05-12",
+        "2025-06-03",
+        "2025-03-22",
+        "2025-08-03",
+        "2025-04-06",
+        "2025-10-26",
+        "2025-11-01",
+        "2025-10-14",
+        "2025-02-09",
+        "2025-03-17",
+        "2025-05-19",
+        "2025-06-06",
+        "2025-01-24",
+        "2025-01-10",
+        "2025-11-07",
+        "2025-02-23",
+        "2025-10-31",
+        "2025-06-05",
+        "2025-04-08",
+        "2025-03-02",
+        "2025-02-17",
+        "2025-06-24",
+        "2025-04-12",
+        "2025-07-21",
+        "2025-04-25",
+        "2025-07-02",
+        "2025-03-28",
+        "2025-08-08",
+        "2024-12-28",
+        "2025-04-21",
+        "2025-06-21",
+        "2025-09-25",
+        "2025-02-28",
+        "2025-11-10",
+        "2025-05-09",
+        "2025-10-23",
+        "2025-03-19",
+        "2025-04-02",
+        "2025-04-03",
+        "2025-01-18",
+        "2025-04-10",
+        "2025-04-20",
+        "2025-11-08",
+        "2025-09-21",
+        "2025-04-17",
+        "2025-07-05",
+        "2025-02-19",
+        "2025-10-13",
+        "2025-01-16",
+        "2025-04-18",
+        "2025-04-26",
+        "2025-01-15",
+        "2025-06-16",
+        "2025-07-29",
+        "2025-08-01",
+        "2025-07-06",
+        "2025-07-04",
+        "2025-01-21",
+        "2025-03-14",
+        "2025-05-10",
+        "2025-06-14",
+        "2025-11-20",
+        "2025-02-07",
+        "2025-11-14",
+        "2025-01-11",
+        "2025-02-03",
+        "2025-06-30",
+        "2025-10-06",
+        "2025-05-04",
+        "2025-10-28",
+        "2025-02-06",
+        "2025-10-20",
+        "2025-07-03",
+        "2025-04-09",
+        "2025-04-19",
+        "2025-02-02",
+        "2025-10-22",
+        "2025-08-12",
+        "2025-04-05",
+        "2025-09-22",
+        "2025-10-21",
+        "2025-03-30",
+        "2025-04-01",
+        "2025-10-24",
+        "2025-09-26",
+        "2025-11-22",
+        "2025-10-19",
+        "2025-10-15",
+        "2025-11-24",
+        "2025-02-10",
+        "2025-07-23",
+        "2025-11-02",
+        "2025-03-06",
+        "2025-06-18",
+        "2025-01-14",
+        "2025-06-09",
+        "2025-02-08",
+        "2025-06-07",
+        "2025-11-06",
+        "2025-06-28",
+        "2025-06-11",
+        "2025-10-29",
+        "2025-04-23",
+        "2025-05-08",
+        "2025-02-26",
+        "2025-04-13",
+        "2025-11-09",
+        "2025-05-21",
+        "2025-07-01",
+        "2025-05-14",
+        "2025-10-01",
+        "2025-03-20",
+        "2025-01-13",
+        "2025-02-12",
+        "2025-10-25"
+      ],
+      "by_hour": [
+        31,
+        5,
+        3,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        13,
+        10,
+        27,
+        31,
+        49,
+        31,
+        18,
+        14,
+        44,
+        71,
+        59,
+        51,
+        58,
+        39,
+        44
+      ],
+      "emojis": 31,
+      "questions": 27,
+      "laughs": 15,
+      "first_message": "2024-12-28T23:36:55",
+      "last_message": "2025-11-24T21:03:56",
+      "active_days_count": 128,
+      "avg_chars": 19,
+      "avg_response": 2.5,
+      "peak_hour": 18
+    },
+    "Kiro": {
+      "messages": 1377,
+      "media": 173,
+      "total_chars": 43575,
+      "active_days": [
+        "2025-05-16",
+        "2025-05-06",
+        "2025-04-24",
+        "2025-06-12",
+        "2025-03-11",
+        "2025-06-01",
+        "2025-04-07",
+        "2025-05-31",
+        "2025-06-02",
+        "2025-10-03",
+        "2025-03-07",
+        "2025-10-27",
+        "2025-06-23",
+        "2025-05-07",
+        "2025-01-12",
+        "2025-05-03",
+        "2025-06-17",
+        "2025-01-09",
+        "2025-07-22",
+        "2025-06-20",
+        "2025-06-27",
+        "2025-11-05",
+        "2025-04-04",
+        "2025-05-12",
+        "2025-06-10",
+        "2025-06-03",
+        "2025-03-22",
+        "2025-08-03",
+        "2025-05-22",
+        "2025-10-26",
+        "2025-11-01",
+        "2025-07-08",
+        "2025-03-25",
+        "2025-05-19",
+        "2025-06-06",
+        "2025-01-24",
+        "2025-01-10",
+        "2025-11-07",
+        "2025-02-23",
+        "2025-07-12",
+        "2025-10-31",
+        "2025-01-19",
+        "2025-04-08",
+        "2025-03-02",
+        "2025-05-01",
+        "2025-02-17",
+        "2025-03-18",
+        "2025-06-24",
+        "2025-10-02",
+        "2025-04-12",
+        "2025-07-21",
+        "2025-04-25",
+        "2025-07-02",
+        "2025-03-09",
+        "2025-03-28",
+        "2025-07-11",
+        "2025-05-13",
+        "2025-04-21",
+        "2025-06-21",
+        "2025-04-16",
+        "2025-06-26",
+        "2025-02-28",
+        "2025-11-10",
+        "2025-05-09",
+        "2025-03-19",
+        "2025-08-05",
+        "2025-04-03",
+        "2025-07-14",
+        "2025-01-18",
+        "2025-04-29",
+        "2025-05-30",
+        "2025-03-12",
+        "2025-04-20",
+        "2025-11-08",
+        "2025-05-24",
+        "2025-09-21",
+        "2025-04-17",
+        "2025-07-05",
+        "2025-02-24",
+        "2025-02-19",
+        "2025-10-13",
+        "2025-01-08",
+        "2025-05-23",
+        "2025-07-10",
+        "2025-01-16",
+        "2025-04-18",
+        "2025-04-26",
+        "2025-01-15",
+        "2025-07-29",
+        "2025-08-01",
+        "2025-11-17",
+        "2025-05-15",
+        "2025-02-11",
+        "2025-07-06",
+        "2025-07-04",
+        "2025-01-21",
+        "2025-03-14",
+        "2025-11-15",
+        "2025-05-10",
+        "2025-06-14",
+        "2025-11-20",
+        "2025-11-25",
+        "2025-02-07",
+        "2025-07-13",
+        "2025-10-05",
+        "2025-06-19",
+        "2025-01-11",
+        "2025-04-30",
+        "2025-02-03",
+        "2025-03-01",
+        "2025-06-22",
+        "2025-07-18",
+        "2025-07-15",
+        "2025-10-28",
+        "2025-05-26",
+        "2025-07-03",
+        "2025-10-20",
+        "2025-04-09",
+        "2025-04-19",
+        "2025-11-21",
+        "2025-05-25",
+        "2025-10-22",
+        "2025-07-07",
+        "2025-03-15",
+        "2025-03-21",
+        "2025-10-12",
+        "2025-07-31",
+        "2025-05-02",
+        "2025-04-05",
+        "2025-10-21",
+        "2025-08-13",
+        "2025-03-30",
+        "2025-04-11",
+        "2025-06-29",
+        "2025-04-22",
+        "2025-04-01",
+        "2025-10-24",
+        "2025-10-07",
+        "2025-07-16",
+        "2025-10-19",
+        "2025-10-15",
+        "2025-09-30",
+        "2025-11-24",
+        "2025-02-10",
+        "2025-07-28",
+        "2025-07-23",
+        "2025-11-02",
+        "2025-03-06",
+        "2025-06-18",
+        "2025-06-04",
+        "2025-07-30",
+        "2025-01-14",
+        "2025-06-09",
+        "2025-02-08",
+        "2025-06-07",
+        "2025-07-09",
+        "2025-06-28",
+        "2025-07-19",
+        "2025-03-26",
+        "2025-03-27",
+        "2025-04-23",
+        "2025-07-17",
+        "2025-05-08",
+        "2025-02-26",
+        "2025-10-29",
+        "2025-04-13",
+        "2025-07-24",
+        "2025-07-01",
+        "2025-03-31",
+        "2025-05-14",
+        "2025-05-18",
+        "2025-07-27",
+        "2025-03-20",
+        "2025-08-11",
+        "2025-01-13",
+        "2025-10-01",
+        "2025-10-25"
+      ],
+      "by_hour": [
+        32,
+        61,
+        2,
+        31,
+        10,
+        0,
+        0,
+        14,
+        21,
+        50,
+        57,
+        60,
+        56,
+        120,
+        129,
+        82,
+        111,
+        79,
+        101,
+        58,
+        97,
+        95,
+        70,
+        41
+      ],
+      "emojis": 144,
+      "questions": 208,
+      "laughs": 137,
+      "first_message": "2025-01-08T17:17:01",
+      "last_message": "2025-11-25T08:37:06",
+      "active_days_count": 177,
+      "avg_chars": 36,
+      "avg_response": 3.1,
+      "peak_hour": 14
+    },
+    "Hedra": {
+      "messages": 1017,
+      "media": 41,
+      "total_chars": 41059,
+      "active_days": [
+        "2025-05-16",
+        "2025-04-24",
+        "2025-06-12",
+        "2025-06-01",
+        "2025-09-29",
+        "2025-04-07",
+        "2025-06-02",
+        "2025-09-20",
+        "2025-03-07",
+        "2025-10-03",
+        "2025-02-05",
+        "2025-10-27",
+        "2025-06-23",
+        "2025-01-12",
+        "2025-05-03",
+        "2025-01-09",
+        "2025-07-22",
+        "2025-06-20",
+        "2025-06-27",
+        "2025-11-05",
+        "2025-04-04",
+        "2025-05-12",
+        "2025-06-03",
+        "2025-03-22",
+        "2025-05-22",
+        "2025-07-26",
+        "2025-10-26",
+        "2025-07-08",
+        "2025-10-14",
+        "2025-03-25",
+        "2025-02-09",
+        "2025-05-19",
+        "2025-06-06",
+        "2025-11-07",
+        "2025-01-10",
+        "2025-09-24",
+        "2025-02-23",
+        "2025-07-12",
+        "2025-10-31",
+        "2025-06-05",
+        "2025-04-08",
+        "2025-03-02",
+        "2025-05-01",
+        "2025-02-17",
+        "2025-03-18",
+        "2025-06-24",
+        "2025-11-13",
+        "2025-10-02",
+        "2025-04-12",
+        "2025-04-25",
+        "2025-07-02",
+        "2025-03-09",
+        "2025-06-13",
+        "2025-03-28",
+        "2025-08-08",
+        "2025-07-11",
+        "2025-04-21",
+        "2025-06-26",
+        "2025-09-25",
+        "2025-09-28",
+        "2025-05-09",
+        "2025-10-23",
+        "2025-03-19",
+        "2025-08-05",
+        "2025-04-03",
+        "2025-07-14",
+        "2025-11-03",
+        "2025-04-29",
+        "2025-03-12",
+        "2025-07-05",
+        "2025-02-24",
+        "2025-11-19",
+        "2025-02-19",
+        "2025-10-13",
+        "2025-05-23",
+        "2025-10-18",
+        "2025-07-10",
+        "2025-01-16",
+        "2025-04-26",
+        "2025-01-15",
+        "2025-05-20",
+        "2025-06-16",
+        "2025-07-29",
+        "2025-10-04",
+        "2025-08-01",
+        "2025-07-20",
+        "2025-08-02",
+        "2025-07-06",
+        "2025-07-04",
+        "2025-02-25",
+        "2025-11-15",
+        "2025-05-10",
+        "2025-06-14",
+        "2025-11-20",
+        "2025-02-07",
+        "2025-06-19",
+        "2025-01-11",
+        "2025-04-30",
+        "2025-02-03",
+        "2025-03-01",
+        "2025-06-30",
+        "2025-07-18",
+        "2025-10-06",
+        "2025-07-15",
+        "2025-10-28",
+        "2025-10-20",
+        "2025-02-18",
+        "2025-11-21",
+        "2025-06-15",
+        "2025-10-22",
+        "2025-07-07",
+        "2025-08-09",
+        "2025-03-15",
+        "2025-10-12",
+        "2025-07-31",
+        "2025-05-02",
+        "2025-08-12",
+        "2025-04-05",
+        "2025-10-21",
+        "2025-08-13",
+        "2025-03-30",
+        "2025-04-11",
+        "2025-06-29",
+        "2025-04-22",
+        "2025-10-24",
+        "2025-10-09",
+        "2025-09-26",
+        "2025-09-23",
+        "2025-10-07",
+        "2025-07-16",
+        "2025-10-19",
+        "2025-09-30",
+        "2025-02-10",
+        "2025-07-28",
+        "2025-07-23",
+        "2025-03-06",
+        "2025-06-18",
+        "2025-06-04",
+        "2025-07-30",
+        "2025-01-14",
+        "2025-06-09",
+        "2025-02-08",
+        "2025-06-07",
+        "2025-10-08",
+        "2025-07-09",
+        "2025-06-28",
+        "2025-07-19",
+        "2025-03-26",
+        "2025-10-29",
+        "2025-07-17",
+        "2025-05-08",
+        "2025-02-26",
+        "2025-11-09",
+        "2025-07-24",
+        "2025-09-27",
+        "2025-07-01",
+        "2025-03-31",
+        "2025-05-14",
+        "2025-05-18",
+        "2025-07-27",
+        "2025-10-01",
+        "2025-01-13",
+        "2025-02-12",
+        "2025-10-25"
+      ],
+      "by_hour": [
+        33,
+        15,
+        1,
+        0,
+        0,
+        0,
+        0,
+        5,
+        10,
+        33,
+        57,
+        72,
+        47,
+        77,
+        96,
+        50,
+        82,
+        69,
+        80,
+        56,
+        58,
+        58,
+        65,
+        53
+      ],
+      "emojis": 51,
+      "questions": 77,
+      "laughs": 141,
+      "first_message": "2025-01-09T11:25:02",
+      "last_message": "2025-11-21T16:22:48",
+      "active_days_count": 164,
+      "avg_chars": 42,
+      "avg_response": 3.5,
+      "peak_hour": 14
+    },
+    "Koko": {
+      "messages": 1817,
+      "media": 151,
+      "total_chars": 55799,
+      "active_days": [
+        "2025-05-16",
+        "2025-06-12",
+        "2025-09-29",
+        "2025-04-07",
+        "2025-09-20",
+        "2025-03-07",
+        "2025-02-05",
+        "2025-10-11",
+        "2025-10-27",
+        "2025-05-07",
+        "2025-01-12",
+        "2025-11-16",
+        "2025-01-09",
+        "2025-07-22",
+        "2025-11-05",
+        "2025-04-04",
+        "2025-06-03",
+        "2025-08-03",
+        "2025-05-22",
+        "2025-07-26",
+        "2025-10-26",
+        "2025-11-01",
+        "2025-07-08",
+        "2025-10-14",
+        "2025-02-09",
+        "2025-03-17",
+        "2025-05-19",
+        "2025-06-06",
+        "2025-08-07",
+        "2025-11-07",
+        "2025-01-10",
+        "2025-03-16",
+        "2025-02-23",
+        "2025-07-12",
+        "2025-10-31",
+        "2025-04-08",
+        "2025-02-17",
+        "2025-10-30",
+        "2025-10-02",
+        "2025-04-12",
+        "2025-08-10",
+        "2025-07-02",
+        "2025-06-13",
+        "2025-03-28",
+        "2025-08-08",
+        "2025-07-11",
+        "2025-05-13",
+        "2025-04-21",
+        "2025-06-21",
+        "2025-06-26",
+        "2025-02-28",
+        "2025-09-25",
+        "2025-09-28",
+        "2025-11-10",
+        "2025-05-09",
+        "2025-10-23",
+        "2025-03-19",
+        "2025-08-05",
+        "2025-04-03",
+        "2025-07-14",
+        "2025-04-29",
+        "2025-04-10",
+        "2025-04-20",
+        "2025-11-08",
+        "2025-09-21",
+        "2025-07-05",
+        "2025-02-24",
+        "2025-02-19",
+        "2025-10-13",
+        "2025-05-23",
+        "2025-07-10",
+        "2025-01-16",
+        "2025-04-18",
+        "2025-01-15",
+        "2025-06-16",
+        "2025-07-29",
+        "2025-08-01",
+        "2025-07-20",
+        "2025-11-17",
+        "2025-07-06",
+        "2025-07-04",
+        "2025-02-25",
+        "2025-11-15",
+        "2025-11-25",
+        "2025-11-18",
+        "2025-01-29",
+        "2025-01-11",
+        "2025-02-03",
+        "2025-06-22",
+        "2025-06-30",
+        "2025-10-06",
+        "2025-07-15",
+        "2025-04-14",
+        "2025-10-28",
+        "2025-10-20",
+        "2025-07-03",
+        "2025-04-19",
+        "2025-06-15",
+        "2025-10-22",
+        "2025-07-07",
+        "2025-08-09",
+        "2025-03-15",
+        "2025-10-12",
+        "2025-07-31",
+        "2025-08-12",
+        "2025-04-05",
+        "2025-09-22",
+        "2025-10-21",
+        "2025-08-13",
+        "2025-03-30",
+        "2025-04-01",
+        "2025-09-23",
+        "2025-10-07",
+        "2025-07-16",
+        "2025-11-24",
+        "2025-02-10",
+        "2025-07-28",
+        "2025-07-23",
+        "2025-11-02",
+        "2025-03-06",
+        "2025-07-30",
+        "2025-01-14",
+        "2025-02-08",
+        "2025-11-06",
+        "2025-10-08",
+        "2025-07-09",
+        "2025-07-19",
+        "2025-06-11",
+        "2025-10-29",
+        "2025-07-17",
+        "2025-04-13",
+        "2025-11-09",
+        "2025-07-24",
+        "2025-07-27",
+        "2025-08-11",
+        "2025-10-01",
+        "2025-01-13",
+        "2025-10-25",
+        "2025-10-10"
+      ],
+      "by_hour": [
+        75,
+        127,
+        22,
+        28,
+        18,
+        9,
+        18,
+        56,
+        17,
+        17,
+        69,
+        13,
+        27,
+        127,
+        65,
+        94,
+        195,
+        217,
+        173,
+        101,
+        107,
+        61,
+        121,
+        60
+      ],
+      "emojis": 150,
+      "questions": 132,
+      "laughs": 146,
+      "first_message": "2025-01-09T13:30:11",
+      "last_message": "2025-11-25T09:14:43",
+      "active_days_count": 139,
+      "avg_chars": 33,
+      "avg_response": 2.8,
+      "peak_hour": 17
+    },
+    "Abanob": {
+      "messages": 2791,
+      "media": 583,
+      "total_chars": 81487,
+      "active_days": [
+        "2025-04-24",
+        "2025-06-12",
+        "2025-06-01",
+        "2025-09-29",
+        "2025-04-07",
+        "2025-05-31",
+        "2025-11-23",
+        "2025-09-20",
+        "2025-10-03",
+        "2025-10-11",
+        "2025-10-27",
+        "2025-06-23",
+        "2025-05-07",
+        "2025-01-12",
+        "2025-05-03",
+        "2025-01-09",
+        "2025-03-29",
+        "2025-06-20",
+        "2025-07-22",
+        "2025-06-27",
+        "2025-11-05",
+        "2025-04-04",
+        "2025-06-10",
+        "2025-06-03",
+        "2025-03-22",
+        "2025-10-17",
+        "2025-05-22",
+        "2025-04-06",
+        "2025-10-26",
+        "2025-11-01",
+        "2025-07-08",
+        "2025-10-14",
+        "2025-03-25",
+        "2025-02-09",
+        "2025-05-19",
+        "2025-06-06",
+        "2025-08-07",
+        "2025-11-07",
+        "2025-01-10",
+        "2025-09-24",
+        "2025-02-23",
+        "2025-01-19",
+        "2025-06-05",
+        "2025-04-08",
+        "2025-05-01",
+        "2025-02-17",
+        "2025-10-30",
+        "2025-10-02",
+        "2025-04-12",
+        "2025-04-25",
+        "2025-07-02",
+        "2025-06-13",
+        "2025-03-28",
+        "2025-06-25",
+        "2025-07-11",
+        "2025-06-21",
+        "2025-06-26",
+        "2025-09-25",
+        "2025-09-28",
+        "2025-11-10",
+        "2025-05-09",
+        "2025-10-23",
+        "2025-08-05",
+        "2025-01-17",
+        "2025-04-03",
+        "2025-07-14",
+        "2025-05-30",
+        "2025-04-29",
+        "2025-04-10",
+        "2025-04-20",
+        "2025-11-08",
+        "2025-09-21",
+        "2025-04-17",
+        "2025-07-05",
+        "2025-02-24",
+        "2025-02-19",
+        "2025-10-13",
+        "2025-05-23",
+        "2025-10-18",
+        "2025-01-16",
+        "2025-04-18",
+        "2025-04-26",
+        "2025-01-15",
+        "2025-06-16",
+        "2025-07-29",
+        "2025-08-01",
+        "2025-11-17",
+        "2025-10-16",
+        "2025-07-06",
+        "2025-07-04",
+        "2025-02-25",
+        "2025-11-15",
+        "2025-05-10",
+        "2025-04-27",
+        "2025-06-14",
+        "2025-11-20",
+        "2025-10-05",
+        "2025-06-19",
+        "2025-01-29",
+        "2025-01-11",
+        "2025-04-30",
+        "2025-11-18",
+        "2025-06-30",
+        "2025-10-06",
+        "2025-07-15",
+        "2025-05-04",
+        "2025-10-28",
+        "2025-05-26",
+        "2025-07-03",
+        "2025-10-20",
+        "2025-04-09",
+        "2025-04-19",
+        "2025-06-15",
+        "2025-11-21",
+        "2025-10-22",
+        "2025-07-07",
+        "2025-08-09",
+        "2025-10-12",
+        "2025-07-31",
+        "2025-04-05",
+        "2025-10-21",
+        "2025-03-30",
+        "2025-06-29",
+        "2025-08-06",
+        "2025-10-24",
+        "2025-09-26",
+        "2025-11-22",
+        "2025-10-07",
+        "2025-07-16",
+        "2025-10-19",
+        "2025-10-15",
+        "2025-09-30",
+        "2025-11-24",
+        "2025-07-28",
+        "2025-07-23",
+        "2025-11-02",
+        "2025-06-04",
+        "2025-01-14",
+        "2025-06-09",
+        "2025-06-07",
+        "2025-11-06",
+        "2025-10-08",
+        "2025-07-09",
+        "2025-06-28",
+        "2025-03-26",
+        "2025-06-11",
+        "2025-10-29",
+        "2025-04-23",
+        "2025-07-17",
+        "2025-05-08",
+        "2025-04-13",
+        "2025-07-24",
+        "2025-05-21",
+        "2025-07-01",
+        "2025-03-31",
+        "2025-07-27",
+        "2025-05-18",
+        "2025-10-01",
+        "2025-01-13",
+        "2025-10-25",
+        "2025-10-10"
+      ],
+      "by_hour": [
+        186,
+        159,
+        30,
+        8,
+        2,
+        1,
+        0,
+        14,
+        15,
+        52,
+        183,
+        77,
+        89,
+        231,
+        202,
+        156,
+        189,
+        175,
+        157,
+        179,
+        167,
+        121,
+        180,
+        218
+      ],
+      "emojis": 177,
+      "questions": 193,
+      "laughs": 345,
+      "first_message": "2025-01-09T16:51:09",
+      "last_message": "2025-11-24T13:50:21",
+      "active_days_count": 161,
+      "avg_chars": 37,
+      "avg_response": 2.4,
+      "peak_hour": 13
+    },
+    "Aziz": {
+      "messages": 78,
+      "media": 0,
+      "total_chars": 2241,
+      "active_days": [
+        "2025-10-31",
+        "2025-07-10",
+        "2025-04-18",
+        "2025-09-20",
+        "2025-10-02",
+        "2025-04-12",
+        "2025-08-13",
+        "2025-04-25",
+        "2025-06-23",
+        "2025-08-08",
+        "2025-05-03",
+        "2025-09-26",
+        "2025-11-22",
+        "2025-04-21",
+        "2025-07-16",
+        "2025-09-30",
+        "2025-09-25",
+        "2025-07-04",
+        "2025-06-20",
+        "2025-07-22",
+        "2025-11-15",
+        "2025-11-20",
+        "2025-06-10",
+        "2025-06-03",
+        "2025-03-04",
+        "2025-10-05",
+        "2025-06-19",
+        "2025-05-22",
+        "2025-07-09",
+        "2025-07-19",
+        "2025-06-22",
+        "2025-07-14",
+        "2025-07-17",
+        "2025-03-12",
+        "2025-07-08",
+        "2025-07-01",
+        "2025-05-14",
+        "2025-08-11",
+        "2025-07-05",
+        "2025-04-19",
+        "2025-02-12",
+        "2025-10-10"
+      ],
+      "by_hour": [
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        6,
+        6,
+        9,
+        8,
+        5,
+        4,
+        3,
+        7,
+        2,
+        3,
+        4,
+        3,
+        7,
+        3,
+        4
+      ],
+      "emojis": 32,
+      "questions": 4,
+      "laughs": 30,
+      "first_message": "2025-02-12T18:51:30",
+      "last_message": "2025-11-22T14:27:33",
+      "active_days_count": 42,
+      "avg_chars": 29,
+      "avg_response": 7.2,
+      "peak_hour": 11
+    },
+    "Meta AI": {
+      "messages": 78,
+      "media": 67,
+      "total_chars": 853,
+      "active_days": [
+        "2025-04-12",
+        "2025-02-24"
+      ],
+      "by_hour": [
+        14,
+        62,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2,
+        0,
+        0
+      ],
+      "emojis": 0,
+      "questions": 0,
+      "laughs": 0,
+      "first_message": "2025-02-24T00:44:31",
+      "last_message": "2025-04-12T21:26:59",
+      "active_days_count": 2,
+      "avg_chars": 78,
+      "avg_response": 0.1,
+      "peak_hour": 1
+    }
+  },
+  "by_month": {
+    "2024-12": 29,
+    "2025-01": 3148,
+    "2025-02": 1312,
+    "2025-03": 1122,
+    "2025-04": 2074,
+    "2025-05": 1170,
+    "2025-06": 1991,
+    "2025-07": 2730,
+    "2025-08": 895,
+    "2025-09": 647,
+    "2025-10": 2532,
+    "2025-11": 1514
+  },
+  "by_hour": [
+    720,
+    746,
+    126,
+    118,
+    51,
+    26,
+    89,
+    278,
+    290,
+    710,
+    847,
+    787,
+    930,
+    1380,
+    1329,
+    1052,
+    1477,
+    1297,
+    1467,
+    1327,
+    1340,
+    1007,
+    961,
+    809
+  ],
+  "by_day_of_week": [
+    2143,
+    3331,
+    2467,
+    2688,
+    2856,
+    3157,
+    2522
+  ],
+  "daily_counts": {
+    "2024-12-07": 1,
+    "2024-12-12": 4,
+    "2024-12-18": 5,
+    "2024-12-19": 8,
+    "2024-12-21": 1,
+    "2024-12-28": 8,
+    "2024-12-29": 2,
+    "2025-01-08": 8,
+    "2025-01-09": 595,
+    "2025-01-10": 448,
+    "2025-01-11": 152,
+    "2025-01-12": 466,
+    "2025-01-13": 409,
+    "2025-01-14": 314,
+    "2025-01-15": 357,
+    "2025-01-16": 309,
+    "2025-01-17": 23,
+    "2025-01-18": 4,
+    "2025-01-19": 35,
+    "2025-01-21": 5,
+    "2025-01-24": 19,
+    "2025-01-29": 4,
+    "2025-02-02": 46,
+    "2025-02-03": 78,
+    "2025-02-04": 2,
+    "2025-02-05": 13,
+    "2025-02-06": 3,
+    "2025-02-07": 26,
+    "2025-02-08": 45,
+    "2025-02-09": 79,
+    "2025-02-10": 27,
+    "2025-02-11": 23,
+    "2025-02-12": 18,
+    "2025-02-17": 93,
+    "2025-02-18": 11,
+    "2025-02-19": 204,
+    "2025-02-20": 3,
+    "2025-02-23": 123,
+    "2025-02-24": 293,
+    "2025-02-25": 55,
+    "2025-02-26": 79,
+    "2025-02-28": 91,
+    "2025-03-01": 15,
+    "2025-03-02": 12,
+    "2025-03-03": 3,
+    "2025-03-04": 2,
+    "2025-03-06": 93,
+    "2025-03-07": 34,
+    "2025-03-08": 1,
+    "2025-03-09": 18,
+    "2025-03-11": 39,
+    "2025-03-12": 39,
+    "2025-03-14": 30,
+    "2025-03-15": 22,
+    "2025-03-16": 1,
+    "2025-03-17": 6,
+    "2025-03-18": 28,
+    "2025-03-19": 51,
+    "2025-03-20": 46,
+    "2025-03-21": 10,
+    "2025-03-22": 75,
+    "2025-03-23": 2,
+    "2025-03-25": 14,
+    "2025-03-26": 92,
+    "2025-03-27": 6,
+    "2025-03-28": 293,
+    "2025-03-29": 3,
+    "2025-03-30": 158,
+    "2025-03-31": 29,
+    "2025-04-01": 32,
+    "2025-04-02": 16,
+    "2025-04-03": 334,
+    "2025-04-04": 144,
+    "2025-04-05": 76,
+    "2025-04-06": 12,
+    "2025-04-07": 69,
+    "2025-04-08": 134,
+    "2025-04-09": 12,
+    "2025-04-10": 32,
+    "2025-04-11": 28,
+    "2025-04-12": 132,
+    "2025-04-13": 83,
+    "2025-04-14": 24,
+    "2025-04-15": 5,
+    "2025-04-16": 15,
+    "2025-04-17": 55,
+    "2025-04-18": 102,
+    "2025-04-19": 109,
+    "2025-04-20": 47,
+    "2025-04-21": 120,
+    "2025-04-22": 38,
+    "2025-04-23": 32,
+    "2025-04-24": 68,
+    "2025-04-25": 124,
+    "2025-04-26": 28,
+    "2025-04-27": 2,
+    "2025-04-28": 1,
+    "2025-04-29": 109,
+    "2025-04-30": 91,
+    "2025-05-01": 11,
+    "2025-05-02": 60,
+    "2025-05-03": 101,
+    "2025-05-04": 28,
+    "2025-05-05": 2,
+    "2025-05-06": 9,
+    "2025-05-07": 34,
+    "2025-05-08": 63,
+    "2025-05-09": 82,
+    "2025-05-10": 104,
+    "2025-05-12": 42,
+    "2025-05-13": 62,
+    "2025-05-14": 48,
+    "2025-05-15": 18,
+    "2025-05-16": 89,
+    "2025-05-17": 8,
+    "2025-05-18": 18,
+    "2025-05-19": 122,
+    "2025-05-20": 18,
+    "2025-05-21": 34,
+    "2025-05-22": 32,
+    "2025-05-23": 31,
+    "2025-05-24": 9,
+    "2025-05-25": 48,
+    "2025-05-26": 41,
+    "2025-05-28": 3,
+    "2025-05-29": 4,
+    "2025-05-30": 21,
+    "2025-05-31": 28,
+    "2025-06-01": 59,
+    "2025-06-02": 21,
+    "2025-06-03": 281,
+    "2025-06-04": 46,
+    "2025-06-05": 60,
+    "2025-06-06": 47,
+    "2025-06-07": 36,
+    "2025-06-08": 3,
+    "2025-06-09": 69,
+    "2025-06-10": 33,
+    "2025-06-11": 19,
+    "2025-06-12": 72,
+    "2025-06-13": 83,
+    "2025-06-14": 206,
+    "2025-06-15": 29,
+    "2025-06-16": 37,
+    "2025-06-17": 26,
+    "2025-06-18": 17,
+    "2025-06-19": 44,
+    "2025-06-20": 44,
+    "2025-06-21": 64,
+    "2025-06-22": 12,
+    "2025-06-23": 148,
+    "2025-06-24": 36,
+    "2025-06-25": 40,
+    "2025-06-26": 104,
+    "2025-06-27": 39,
+    "2025-06-28": 108,
+    "2025-06-29": 116,
+    "2025-06-30": 92,
+    "2025-07-01": 52,
+    "2025-07-02": 352,
+    "2025-07-03": 197,
+    "2025-07-04": 334,
+    "2025-07-05": 170,
+    "2025-07-06": 69,
+    "2025-07-07": 54,
+    "2025-07-08": 152,
+    "2025-07-09": 55,
+    "2025-07-10": 56,
+    "2025-07-11": 64,
+    "2025-07-12": 26,
+    "2025-07-13": 22,
+    "2025-07-14": 114,
+    "2025-07-15": 39,
+    "2025-07-16": 51,
+    "2025-07-17": 74,
+    "2025-07-18": 34,
+    "2025-07-19": 64,
+    "2025-07-20": 19,
+    "2025-07-21": 11,
+    "2025-07-22": 36,
+    "2025-07-23": 305,
+    "2025-07-24": 13,
+    "2025-07-26": 15,
+    "2025-07-27": 77,
+    "2025-07-28": 28,
+    "2025-07-29": 145,
+    "2025-07-30": 11,
+    "2025-07-31": 91,
+    "2025-08-01": 93,
+    "2025-08-02": 10,
+    "2025-08-03": 34,
+    "2025-08-04": 12,
+    "2025-08-05": 283,
+    "2025-08-06": 5,
+    "2025-08-07": 25,
+    "2025-08-08": 155,
+    "2025-08-09": 80,
+    "2025-08-10": 15,
+    "2025-08-11": 12,
+    "2025-08-12": 110,
+    "2025-08-13": 61,
+    "2025-09-20": 65,
+    "2025-09-21": 127,
+    "2025-09-22": 32,
+    "2025-09-23": 19,
+    "2025-09-24": 16,
+    "2025-09-25": 150,
+    "2025-09-26": 56,
+    "2025-09-27": 6,
+    "2025-09-28": 90,
+    "2025-09-29": 45,
+    "2025-09-30": 41,
+    "2025-10-01": 131,
+    "2025-10-02": 56,
+    "2025-10-08": 46,
+    "2025-10-03": 67,
+    "2025-10-04": 49,
+    "2025-10-05": 25,
+    "2025-10-06": 37,
+    "2025-10-07": 81,
+    "2025-10-09": 6,
+    "2025-10-10": 56,
+    "2025-10-11": 43,
+    "2025-10-12": 22,
+    "2025-10-13": 69,
+    "2025-10-14": 34,
+    "2025-10-15": 15,
+    "2025-10-16": 6,
+    "2025-10-17": 6,
+    "2025-10-18": 65,
+    "2025-10-20": 377,
+    "2025-10-19": 23,
+    "2025-10-21": 120,
+    "2025-10-22": 39,
+    "2025-10-23": 66,
+    "2025-10-24": 47,
+    "2025-10-25": 51,
+    "2025-10-26": 144,
+    "2025-10-27": 568,
+    "2025-10-28": 36,
+    "2025-10-29": 137,
+    "2025-10-30": 35,
+    "2025-10-31": 75,
+    "2025-11-01": 236,
+    "2025-11-02": 29,
+    "2025-11-03": 23,
+    "2025-11-04": 5,
+    "2025-11-05": 176,
+    "2025-11-06": 32,
+    "2025-11-07": 275,
+    "2025-11-08": 18,
+    "2025-11-09": 30,
+    "2025-11-10": 103,
+    "2025-11-13": 6,
+    "2025-11-14": 17,
+    "2025-11-15": 244,
+    "2025-11-16": 7,
+    "2025-11-17": 19,
+    "2025-11-18": 25,
+    "2025-11-19": 11,
+    "2025-11-20": 79,
+    "2025-11-21": 10,
+    "2025-11-22": 44,
+    "2025-11-23": 11,
+    "2025-11-24": 101,
+    "2025-11-25": 13
+  },
+  "longest_message": {
+    "sender": "Tharwat",
+    "length": 5679,
+    "preview": "Hypothetically speaking, if I were to strategize on how AI might take over the world (ignoring ethic..."
+  },
+  "active_days": [
+    "2025-05-16",
+    "2025-02-04",
+    "2025-05-06",
+    "2025-04-24",
+    "2025-06-12",
+    "2025-03-11",
+    "2025-06-01",
+    "2025-09-29",
+    "2025-04-07",
+    "2025-05-31",
+    "2025-06-02",
+    "2025-11-23",
+    "2025-09-20",
+    "2025-03-07",
+    "2025-10-03",
+    "2025-02-05",
+    "2025-10-11",
+    "2025-10-27",
+    "2025-06-23",
+    "2025-05-07",
+    "2025-01-12",
+    "2025-05-03",
+    "2025-06-17",
+    "2025-11-16",
+    "2025-01-09",
+    "2025-05-29",
+    "2025-03-29",
+    "2025-06-20",
+    "2025-07-22",
+    "2025-06-27",
+    "2025-11-05",
+    "2025-04-04",
+    "2025-05-12",
+    "2025-04-15",
+    "2025-06-10",
+    "2025-06-03",
+    "2025-03-22",
+    "2025-10-17",
+    "2025-08-03",
+    "2025-05-22",
+    "2025-07-26",
+    "2025-04-06",
+    "2025-10-26",
+    "2025-11-01",
+    "2025-11-04",
+    "2025-07-08",
+    "2025-10-14",
+    "2025-03-25",
+    "2025-02-09",
+    "2024-12-07",
+    "2025-03-17",
+    "2025-05-19",
+    "2025-06-06",
+    "2025-08-07",
+    "2025-01-24",
+    "2025-01-10",
+    "2025-03-16",
+    "2025-11-07",
+    "2025-09-24",
+    "2025-02-23",
+    "2025-07-12",
+    "2025-10-31",
+    "2025-01-19",
+    "2025-06-05",
+    "2025-04-08",
+    "2025-03-02",
+    "2025-05-01",
+    "2025-02-17",
+    "2025-10-30",
+    "2025-03-18",
+    "2025-06-24",
+    "2025-11-13",
+    "2025-10-02",
+    "2025-04-12",
+    "2025-07-21",
+    "2025-08-10",
+    "2025-04-25",
+    "2025-07-02",
+    "2025-08-04",
+    "2025-03-09",
+    "2025-06-13",
+    "2025-03-28",
+    "2025-06-25",
+    "2025-08-08",
+    "2025-07-11",
+    "2025-05-13",
+    "2024-12-28",
+    "2025-04-21",
+    "2025-06-21",
+    "2025-04-16",
+    "2025-06-26",
+    "2025-02-28",
+    "2024-12-29",
+    "2025-05-05",
+    "2025-09-25",
+    "2025-09-28",
+    "2025-11-10",
+    "2025-05-09",
+    "2025-10-23",
+    "2025-03-19",
+    "2025-08-05",
+    "2025-04-02",
+    "2025-03-04",
+    "2025-01-17",
+    "2025-04-03",
+    "2025-07-14",
+    "2025-02-20",
+    "2025-01-18",
+    "2025-04-29",
+    "2025-05-30",
+    "2025-11-03",
+    "2025-04-10",
+    "2025-03-12",
+    "2025-04-20",
+    "2025-11-08",
+    "2025-05-24",
+    "2025-09-21",
+    "2025-04-17",
+    "2025-07-05",
+    "2025-02-24",
+    "2025-11-21",
+    "2025-11-19",
+    "2025-02-19",
+    "2024-12-12",
+    "2025-03-23",
+    "2025-05-17",
+    "2025-03-03",
+    "2025-10-13",
+    "2025-01-08",
+    "2025-05-23",
+    "2025-10-18",
+    "2025-07-10",
+    "2025-01-16",
+    "2025-04-18",
+    "2025-04-26",
+    "2025-01-15",
+    "2025-05-20",
+    "2025-06-16",
+    "2025-07-29",
+    "2025-10-04",
+    "2025-08-01",
+    "2025-07-20",
+    "2025-11-17",
+    "2025-10-16",
+    "2025-05-15",
+    "2025-02-11",
+    "2025-08-02",
+    "2025-07-06",
+    "2025-07-04",
+    "2025-01-21",
+    "2025-03-14",
+    "2025-02-25",
+    "2025-11-15",
+    "2025-05-10",
+    "2025-04-27",
+    "2025-06-14",
+    "2025-11-20",
+    "2025-11-25",
+    "2025-02-07",
+    "2025-07-13",
+    "2025-11-14",
+    "2025-10-05",
+    "2025-06-19",
+    "2025-01-29",
+    "2025-01-11",
+    "2025-04-30",
+    "2025-11-18",
+    "2025-02-03",
+    "2025-03-01",
+    "2025-06-22",
+    "2025-03-08",
+    "2025-06-30",
+    "2025-07-18",
+    "2025-10-06",
+    "2025-07-15",
+    "2025-05-04",
+    "2025-04-14",
+    "2025-10-28",
+    "2025-02-06",
+    "2025-05-26",
+    "2025-02-18",
+    "2025-07-03",
+    "2025-04-09",
+    "2025-04-19",
+    "2024-12-19",
+    "2025-06-15",
+    "2025-05-25",
+    "2025-10-20",
+    "2025-02-02",
+    "2025-10-22",
+    "2025-07-07",
+    "2025-08-09",
+    "2025-03-15",
+    "2025-04-28",
+    "2025-03-21",
+    "2025-10-12",
+    "2025-06-08",
+    "2025-07-31",
+    "2025-05-02",
+    "2025-08-12",
+    "2025-04-05",
+    "2025-09-22",
+    "2025-10-21",
+    "2025-08-13",
+    "2025-03-30",
+    "2025-04-11",
+    "2025-06-29",
+    "2025-04-22",
+    "2025-08-06",
+    "2025-04-01",
+    "2025-10-09",
+    "2025-10-24",
+    "2025-09-26",
+    "2025-11-22",
+    "2025-09-23",
+    "2025-10-07",
+    "2025-07-16",
+    "2025-10-19",
+    "2024-12-18",
+    "2025-09-30",
+    "2025-10-15",
+    "2025-11-24",
+    "2025-02-10",
+    "2025-07-28",
+    "2025-07-23",
+    "2025-11-02",
+    "2025-03-06",
+    "2024-12-21",
+    "2025-06-18",
+    "2025-06-04",
+    "2025-07-30",
+    "2025-01-14",
+    "2025-06-09",
+    "2025-02-08",
+    "2025-06-07",
+    "2025-11-06",
+    "2025-10-08",
+    "2025-07-09",
+    "2025-06-28",
+    "2025-07-19",
+    "2025-03-26",
+    "2025-06-11",
+    "2025-03-27",
+    "2025-04-23",
+    "2025-07-17",
+    "2025-05-08",
+    "2025-02-26",
+    "2025-10-29",
+    "2025-04-13",
+    "2025-11-09",
+    "2025-07-24",
+    "2025-05-21",
+    "2025-05-28",
+    "2025-09-27",
+    "2025-07-01",
+    "2025-03-31",
+    "2025-05-14",
+    "2025-05-18",
+    "2025-07-27",
+    "2025-03-20",
+    "2025-08-11",
+    "2025-01-13",
+    "2025-02-12",
+    "2025-10-01",
+    "2025-10-25",
+    "2025-10-10"
+  ],
+  "most_active_day": {
+    "date": "2025-01-09",
+    "count": 595
+  },
+  "total_days": 266
+};
+
+        function renderOverview() {
+            const container = document.getElementById('overview');
+            const avgPerDay = Math.round(stats.total_messages / stats.total_days);
+            const memberCount = Object.keys(stats.by_person).length;
+
+            container.innerHTML = `
+                <div class="stat-card animate-in">
+                    <div class="stat-number">${stats.total_messages.toLocaleString()}</div>
+                    <div class="stat-label">Total Messages</div>
+                </div>
+                <div class="stat-card animate-in">
+                    <div class="stat-number">${stats.total_media.toLocaleString()}</div>
+                    <div class="stat-label">Media Shared</div>
+                </div>
+                <div class="stat-card animate-in">
+                    <div class="stat-number">${memberCount}</div>
+                    <div class="stat-label">Active Members</div>
+                </div>
+                <div class="stat-card animate-in">
+                    <div class="stat-number">${stats.total_days}</div>
+                    <div class="stat-label">Days Active</div>
+                </div>
+                <div class="stat-card animate-in">
+                    <div class="stat-number">${avgPerDay}</div>
+                    <div class="stat-label">Avg/Day</div>
+                </div>
+                <div class="stat-card animate-in">
+                    <div class="stat-number">${stats.most_active_day.count}</div>
+                    <div class="stat-label">Most Active Day</div>
+                </div>
+            `;
+        }
+
+        function renderLeaderboard() {
+            const messageContainer = document.getElementById('messageLeaderboard');
+            const sortedByMessages = Object.entries(stats.by_person)
+                .sort((a, b) => b[1].messages - a[1].messages);
+
+            messageContainer.innerHTML = sortedByMessages.map(([name, data], index) => {
+                const rankClass = index === 0 ? 'gold' : index === 1 ? 'silver' : index === 2 ? 'bronze' : '';
+                const medals = ['🥇', '🥈', '🥉'];
+                const medal = medals[index] || `#${index + 1}`;
+                const percentage = Math.round(data.messages / stats.total_messages * 100);
+
+                return `
+                    <div class="leaderboard-item ${rankClass} animate-in">
+                        <div class="rank ${rankClass}">${medal}</div>
+                        <div class="avatar">${name.charAt(0)}</div>
+                        <div class="player-info">
+                            <div class="player-name">${name}</div>
+                            <div class="player-stat">${percentage}% of all messages</div>
+                        </div>
+                        <div class="score">${data.messages.toLocaleString()}</div>
+                    </div>
+                `;
+            }).join('');
+
+            const responseContainer = document.getElementById('responseLeaderboard');
+            const sortedByResponse = Object.entries(stats.by_person)
+                .filter(([, data]) => data.avg_response !== null)
+                .sort((a, b) => a[1].avg_response - b[1].avg_response);
+
+            responseContainer.innerHTML = sortedByResponse.slice(0, 10).map(([name, data], index) => {
+                const rankClass = index === 0 ? 'gold' : index === 1 ? 'silver' : index === 2 ? 'bronze' : '';
+                const medals = ['🥇', '🥈', '🥉'];
+                const medal = medals[index] || `#${index + 1}`;
+
+                return `
+                    <div class="leaderboard-item ${rankClass} animate-in">
+                        <div class="rank ${rankClass}">${medal}</div>
+                        <div class="avatar">${name.charAt(0)}</div>
+                        <div class="player-info">
+                            <div class="player-name">${name}</div>
+                            <div class="player-stat">Lightning fast responses</div>
+                        </div>
+                        <div class="score">${data.avg_response}m</div>
+                    </div>
+                `;
+            }).join('');
+
+            const mediaContainer = document.getElementById('mediaLeaderboard');
+            const sortedByMedia = Object.entries(stats.by_person)
+                .sort((a, b) => b[1].media - a[1].media);
+
+            mediaContainer.innerHTML = sortedByMedia.slice(0, 10).map(([name, data], index) => {
+                const rankClass = index === 0 ? 'gold' : index === 1 ? 'silver' : index === 2 ? 'bronze' : '';
+                const medals = ['🥇', '🥈', '🥉'];
+                const medal = medals[index] || `#${index + 1}`;
+                const percentage = stats.total_media > 0 ? Math.round(data.media / stats.total_media * 100) : 0;
+
+                return `
+                    <div class="leaderboard-item ${rankClass} animate-in">
+                        <div class="rank ${rankClass}">${medal}</div>
+                        <div class="avatar">${name.charAt(0)}</div>
+                        <div class="player-info">
+                            <div class="player-name">${name}</div>
+                            <div class="player-stat">${percentage}% of all media</div>
+                        </div>
+                        <div class="score">${data.media.toLocaleString()}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderAwards() {
+            const container = document.getElementById('awardsGrid');
+            const sorted = Object.entries(stats.by_person);
+
+            const mostMessages = [...sorted].sort((a, b) => b[1].messages - a[1].messages)[0];
+            const fastestResponder = [...sorted].filter(([, d]) => d.avg_response !== null).sort((a, b) => a[1].avg_response - b[1].avg_response)[0];
+            const slowestResponder = [...sorted].filter(([, d]) => d.avg_response !== null).sort((a, b) => b[1].avg_response - a[1].avg_response)[0];
+            const mostMedia = [...sorted].sort((a, b) => b[1].media - a[1].media)[0];
+            const mostEmojis = [...sorted].sort((a, b) => b[1].emojis - a[1].emojis)[0];
+            const mostQuestions = [...sorted].sort((a, b) => b[1].questions - a[1].questions)[0];
+            const mostLaughs = [...sorted].sort((a, b) => b[1].laughs - a[1].laughs)[0];
+            const longestAvgMsg = [...sorted].sort((a, b) => b[1].avg_chars - a[1].avg_chars)[0];
+            const shortestAvgMsg = [...sorted].filter(([, d]) => d.avg_chars > 0).sort((a, b) => a[1].avg_chars - b[1].avg_chars)[0];
+            const mostActiveDays = [...sorted].sort((a, b) => b[1].active_days_count - a[1].active_days_count)[0];
+            const leastMessages = [...sorted].sort((a, b) => a[1].messages - b[1].messages)[0];
+
+            const nightOwl = [...sorted].sort((a, b) => {
+                const nightHours = [22, 23, 0, 1, 2, 3, 4];
+                const aNight = nightHours.reduce((sum, h) => sum + a[1].by_hour[h], 0);
+                const bNight = nightHours.reduce((sum, h) => sum + b[1].by_hour[h], 0);
+                return bNight - aNight;
+            })[0];
+
+            const earlyBird = [...sorted].sort((a, b) => {
+                const morningHours = [5, 6, 7, 8, 9];
+                const aMorning = morningHours.reduce((sum, h) => sum + a[1].by_hour[h], 0);
+                const bMorning = morningHours.reduce((sum, h) => sum + b[1].by_hour[h], 0);
+                return bMorning - aMorning;
+            })[0];
+
+            const awards = [
+                { emoji: '👑', title: 'Chat Champion', winner: mostMessages[0], stat: `${mostMessages[1].messages.toLocaleString()} messages` },
+                { emoji: '⚡', title: 'Speed Demon', winner: fastestResponder ? fastestResponder[0] : 'N/A', stat: fastestResponder ? `${fastestResponder[1].avg_response}min avg response` : 'N/A' },
+                { emoji: '🐢', title: 'The Tortoise', winner: slowestResponder ? slowestResponder[0] : 'N/A', stat: slowestResponder ? `${slowestResponder[1].avg_response}min avg response` : 'N/A' },
+                { emoji: '📸', title: 'Media Master', winner: mostMedia[0], stat: `${mostMedia[1].media.toLocaleString()} media shared` },
+                { emoji: '😂', title: 'Class Clown', winner: mostLaughs[0], stat: `${mostLaughs[1].laughs.toLocaleString()} laughs` },
+                { emoji: '🤔', title: 'The Curious One', winner: mostQuestions[0], stat: `${mostQuestions[1].questions.toLocaleString()} questions asked` },
+                { emoji: '📝', title: 'The Novelist', winner: longestAvgMsg[0], stat: `${longestAvgMsg[1].avg_chars} chars/msg avg` },
+                { emoji: '💬', title: 'Short & Sweet', winner: shortestAvgMsg ? shortestAvgMsg[0] : 'N/A', stat: shortestAvgMsg ? `${shortestAvgMsg[1].avg_chars} chars/msg avg` : 'N/A' },
+                { emoji: '🎭', title: 'Emoji King', winner: mostEmojis[0], stat: `${mostEmojis[1].emojis.toLocaleString()} emojis used` },
+                { emoji: '📅', title: 'Most Consistent', winner: mostActiveDays[0], stat: `${mostActiveDays[1].active_days_count} days active` },
+                { emoji: '🌙', title: 'Night Owl', winner: nightOwl[0], stat: `Active late nights` },
+                { emoji: '🌅', title: 'Early Bird', winner: earlyBird[0], stat: `Catches the worm` },
+                { emoji: '👻', title: 'The Ghost', winner: leastMessages[0], stat: `${leastMessages[1].messages} messages only` },
+                { emoji: '📚', title: 'Longest Message', winner: stats.longest_message.sender, stat: `${stats.longest_message.length} characters` },
+            ];
+
+            container.innerHTML = awards.map(award => `
+                <div class="award-card animate-in">
+                    <span class="award-emoji">${award.emoji}</span>
+                    <div class="award-title">${award.title}</div>
+                    <div class="award-winner">${award.winner}</div>
+                    <div class="award-stat">${award.stat}</div>
+                </div>
+            `).join('');
+        }
+
+        function renderCharts() {
+            const monthlyContainer = document.getElementById('monthlyChart');
+            const months = Object.entries(stats.by_month).sort((a, b) => a[0].localeCompare(b[0]));
+            const maxMonth = Math.max(...months.map(m => m[1]));
+            const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+            monthlyContainer.innerHTML = months.map(([month, count]) => {
+                const [year, monthNum] = month.split('-');
+                const height = (count / maxMonth * 100);
+                const label = `${monthNames[parseInt(monthNum) - 1]} '${year.slice(2)}`;
+                return `
+                    <div class="bar-wrapper">
+                        <div class="bar" style="height: ${height}%">
+                            <span class="bar-value">${count.toLocaleString()}</span>
+                        </div>
+                        <div class="bar-label">${label}</div>
+                    </div>
+                `;
+            }).join('');
+
+            const hourlyContainer = document.getElementById('hourlyChart');
+            const maxHour = Math.max(...stats.by_hour);
+
+            hourlyContainer.innerHTML = stats.by_hour.map((count, hour) => {
+                const height = (count / maxHour * 100);
+                const label = hour === 0 ? '12a' : hour < 12 ? `${hour}a` : hour === 12 ? '12p' : `${hour-12}p`;
+                const isNight = hour >= 22 || hour < 6;
+                const isMorning = hour >= 6 && hour < 12;
+                const gradient = isNight ? 'linear-gradient(135deg, #1e3a5f 0%, #3b82f6 100%)' :
+                                 isMorning ? 'linear-gradient(135deg, #f59e0b 0%, #ef4444 100%)' :
+                                 'var(--gradient-1)';
+                return `
+                    <div class="bar-wrapper">
+                        <div class="bar" style="height: ${height}%; background: ${gradient}">
+                            <span class="bar-value">${count.toLocaleString()}</span>
+                        </div>
+                        <div class="bar-label">${label}</div>
+                    </div>
+                `;
+            }).join('');
+
+            const dayContainer = document.getElementById('dayChart');
+            const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            const maxDay = Math.max(...stats.by_day_of_week);
+
+            dayContainer.innerHTML = stats.by_day_of_week.map((count, day) => {
+                const height = (count / maxDay * 100);
+                const isWeekend = day === 0 || day === 6;
+                return `
+                    <div class="bar-wrapper">
+                        <div class="bar" style="height: ${height}%; background: ${isWeekend ? 'linear-gradient(135deg, #14b8a6 0%, #06b6d4 100%)' : 'var(--gradient-1)'}">
+                            <span class="bar-value">${count.toLocaleString()}</span>
+                        </div>
+                        <div class="bar-label">${dayNames[day]}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderFunFacts() {
+            const container = document.getElementById('funFactsContainer');
+            const peakHour = stats.by_hour.indexOf(Math.max(...stats.by_hour));
+            const peakHourLabel = peakHour === 0 ? '12 AM' : peakHour < 12 ? `${peakHour} AM` : peakHour === 12 ? '12 PM' : `${peakHour - 12} PM`;
+
+            const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const peakDay = stats.by_day_of_week.indexOf(Math.max(...stats.by_day_of_week));
+
+            const activeDate = new Date(stats.most_active_day.date);
+            const activeDateStr = activeDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+
+            const totalWords = Math.round(stats.total_chars / 5);
+            const mediaPercent = Math.round(stats.total_media / stats.total_messages * 100);
+
+            const facts = [
+                { icon: '💬', title: 'Total Characters Typed', fact: `The group has typed over <span class="fact-highlight">${stats.total_chars.toLocaleString()}</span> characters - that's roughly <span class="fact-highlight">${totalWords.toLocaleString()}</span> words!` },
+                { icon: '📈', title: 'Busiest Time', fact: `The chat is most active at <span class="fact-highlight">${peakHourLabel}</span> - that's when the real conversations happen!` },
+                { icon: '📅', title: 'Favorite Day', fact: `<span class="fact-highlight">${dayNames[peakDay]}</span> is the most active day of the week with <span class="fact-highlight">${stats.by_day_of_week[peakDay].toLocaleString()}</span> messages.` },
+                { icon: '🔥', title: 'Record Breaking Day', fact: `<span class="fact-highlight">${activeDateStr}</span> was WILD with <span class="fact-highlight">${stats.most_active_day.count}</span> messages!` },
+                { icon: '📊', title: 'Daily Average', fact: `On average, the group sends <span class="fact-highlight">${Math.round(stats.total_messages / stats.total_days)}</span> messages per day.` },
+                { icon: '🎬', title: 'Media Madness', fact: `<span class="fact-highlight">${mediaPercent}%</span> of all messages are images, videos, stickers, or GIFs!` },
+                { icon: '📝', title: 'The Longest Message', fact: `"${stats.longest_message.preview}" - sent by <span class="fact-highlight">${stats.longest_message.sender}</span> (${stats.longest_message.length} characters)` },
+                { icon: '👥', title: 'Group Participation', fact: `<span class="fact-highlight">${Object.keys(stats.by_person).length}</span> members have been active in the past year!` },
+            ];
+
+            container.innerHTML = facts.map(fact => `
+                <div class="fact-item animate-in">
+                    <div class="fact-icon">${fact.icon}</div>
+                    <div class="fact-content">
+                        <h4>${fact.title}</h4>
+                        <p>${fact.fact}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderEveryone() {
+            const container = document.getElementById('everyoneStats');
+            const sorted = Object.entries(stats.by_person).sort((a, b) => b[1].messages - a[1].messages);
+
+            container.innerHTML = sorted.map(([name, data]) => {
+                const peakHour = data.peak_hour;
+                const peakHourLabel = peakHour === 0 ? '12 AM' : peakHour < 12 ? `${peakHour} AM` : peakHour === 12 ? '12 PM' : `${peakHour - 12} PM`;
+                const percentage = Math.round(data.messages / stats.total_messages * 100);
+
+                return `
+                    <div class="person-details animate-in">
+                        <div class="person-header">
+                            <div class="person-avatar-large">${name.charAt(0)}</div>
+                            <div>
+                                <h3 style="margin: 0; font-size: 1.5rem;">${name}</h3>
+                                <p style="color: var(--text-secondary); margin: 5px 0 0;">${percentage}% of chat</p>
+                            </div>
+                        </div>
+                        <div class="person-stats-grid">
+                            <div class="mini-stat">
+                                <div class="mini-stat-value">${data.messages.toLocaleString()}</div>
+                                <div class="mini-stat-label">Messages</div>
+                            </div>
+                            <div class="mini-stat">
+                                <div class="mini-stat-value">${data.media.toLocaleString()}</div>
+                                <div class="mini-stat-label">Media</div>
+                            </div>
+                            <div class="mini-stat">
+                                <div class="mini-stat-value">${data.avg_response !== null ? data.avg_response + 'm' : 'N/A'}</div>
+                                <div class="mini-stat-label">Avg Response</div>
+                            </div>
+                            <div class="mini-stat">
+                                <div class="mini-stat-value">${data.avg_chars}</div>
+                                <div class="mini-stat-label">Chars/Msg</div>
+                            </div>
+                            <div class="mini-stat">
+                                <div class="mini-stat-value">${data.active_days_count}</div>
+                                <div class="mini-stat-label">Days Active</div>
+                            </div>
+                            <div class="mini-stat">
+                                <div class="mini-stat-value">${peakHourLabel}</div>
+                                <div class="mini-stat-label">Peak Hour</div>
+                            </div>
+                            <div class="mini-stat">
+                                <div class="mini-stat-value">${data.emojis.toLocaleString()}</div>
+                                <div class="mini-stat-label">Emojis</div>
+                            </div>
+                            <div class="mini-stat">
+                                <div class="mini-stat-value">${data.laughs.toLocaleString()}</div>
+                                <div class="mini-stat-label">Laughs</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function setupTabs() {
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const targetTab = btn.dataset.tab;
+                    tabBtns.forEach(b => b.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+                    btn.classList.add('active');
+                    document.getElementById(targetTab).classList.add('active');
+                    setTimeout(() => {
+                        document.querySelectorAll('.animate-in').forEach(el => el.classList.add('visible'));
+                    }, 100);
+                });
+            });
+        }
+
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const colors = ['#6366f1', '#ec4899', '#14b8a6', '#f59e0b'];
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                container.appendChild(particle);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderOverview();
+            renderLeaderboard();
+            renderAwards();
+            renderCharts();
+            renderFunFacts();
+            renderEveryone();
+            setupTabs();
+            createParticles();
+            setTimeout(() => {
+                document.querySelectorAll('.animate-in').forEach(el => el.classList.add('visible'));
+            }, 100);
+        });
+    </script>
+</body>
+</html>
